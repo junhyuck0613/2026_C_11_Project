@@ -1,9 +1,7 @@
 // 게임 맵 관련 조작, map.c
 
 #include <stdio.h>
-
-#define mapSize 10
-#define player '@'
+#include "constant.h"
 
 int player_movement(char dir, char map[][mapSize+1], int playerLocation[]);
 //int can_move(char dir, int playerLocation[]);
