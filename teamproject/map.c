@@ -1,22 +1,19 @@
 // 게임 맵 관련 조작, map.c
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "constant.h"
+#include "map.h"
 
-int player_movement(char dir, char map[][mapSize+1], int playerLocation[]);
-//int can_move(char dir, int playerLocation[]);
-void locate_player(int playerLocation[], char map[][mapSize+1]);
-void delete_player(int playerLocation[], char map[][mapSize + 1]);
-void init_map(char map[][mapSize + 1]);
-
-static char map[mapSize][mapSize + 1] = { 0 };
+static char map[MAPSIZE][MAPSIZE + 1] = { 0 };
 static int playerLocation[2] = { 9 ,1 };
+const int flagsPerLevel[4] = { 1, 2, 3 };
 
-int player_movement(char dir, char map[][mapSize+1], int playerLocation[])
+int player_movement(char dir)
 {
 	switch (dir)
 	{
-	case 'w':
+	case 72: // 상
 		if (playerLocation[1] == 1)
 			return 0;
 		else
@@ -27,10 +24,10 @@ int player_movement(char dir, char map[][mapSize+1], int playerLocation[])
 			return 1;
 		}
 
-	case 'a':
+	case 75: // 좌
 		if (playerLocation[0] == 1)
 			return 0;
-		else 
+		else
 		{
 			delete_player(playerLocation, map);
 			playerLocation[0] -= 1;
@@ -38,8 +35,8 @@ int player_movement(char dir, char map[][mapSize+1], int playerLocation[])
 			return 1;
 		}
 
-	case 's':
-		if (playerLocation[1] == mapSize)
+	case 80: // 하
+		if (playerLocation[1] == MAPSIZE)
 			return 0;
 		else
 		{
@@ -49,17 +46,21 @@ int player_movement(char dir, char map[][mapSize+1], int playerLocation[])
 			return 1;
 		}
 
-	case 'd':
-		if (playerLocation[0] == mapSize)
+	case 77: // 우
+		if (playerLocation[0] == MAPSIZE)
 			return 0;
-		else 
+		else
 		{
 			delete_player(playerLocation, map);
 			playerLocation[0] += 1;
 			locate_player(playerLocation, map);
 			return 1;
 		}
+
+		return 0;
 	}
+
+	return 0;
 }
 
 /*
@@ -93,21 +94,36 @@ int can_move(char dir, int playerLocation[])
 }
 */
 
-void locate_player(int playerLocation[], char map[][mapSize + 1])
+void locate_player()
 {
-	map[playerLocation[0]][playerLocation[1]] = player;
+	map[playerLocation[0]][playerLocation[1]] = PLAYER;
 }
 
-void delete_player(int playerLocation[], char map[][mapSize + 1])
+void delete_player()
 {
-	map[playerLocation[0]][playerLocation[1]] = '*';
+	map[playerLocation[0]][playerLocation[1]] = LAND;
 }
 
-void init_map(char map[][mapSize + 1])
+void init_map()
 {
 	int i, j;
 
-	for (i = 0; i < mapSize; i++)
-		for (j = 0; j < mapSize; j++)
-			map[i][j] = '*';
+	for (i = 0; i < MAPSIZE; i++)
+		for (j = 0; j < MAPSIZE; j++)
+			map[i][j] = LAND;
+}
+
+void place_flags(int level)
+{
+	int i;
+
+	for (i = 0; i < flagsPerLevel[level]; i++)
+	{
+		int x = rand() % MAPSIZE;
+		int y = rand() % MAPSIZE;
+		if (map[x][y] == LAND)
+			map[x][y] = FLAG;
+		else
+			i--;
+	}
 }

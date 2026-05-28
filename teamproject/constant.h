@@ -1,4 +1,6 @@
 //상수 선언, constant.h
 
-#define mapSize 10
-#define player '@'
+#define MAPSIZE 10
+#define PLAYER '@'
+#define FLAG 'F'
+#define LAND '*'

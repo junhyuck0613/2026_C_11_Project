@@ -2,31 +2,23 @@
 
 #include <stdio.h>
 #include <conio.h>
-#include <string.h>
+#include "input.h"
 
-int get_input();
-
-static char input;
-static char moveKey[5] = { 'w', 'a', 's', 'd' };
-static char itemKey[10] = {0};
+static int moveKey[4] = { 72, 75, 80, 77 }; // 상 좌 하 우
+static char itemKey[10] = { 0 };
 
 int get_input()
 {
-	int i;
 
-	input = _getch();
 
-	for (i = 0; i < strlen(moveKey);i++)
+	int input = _getch();
+
+	if (input == 224 || input == 0)
 	{
-		if (input == moveKey[i])
-			return 1;
+		input = _getch();
+
+		return input;
 	}
 
-	for (i = 0; i < strlen(itemKey);i++)
-	{
-		if (input == itemKey[i])
-			return 2;
-	}
-
-	return 0;
+	return input;
 }

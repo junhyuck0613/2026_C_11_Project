@@ -1,20 +1,47 @@
-// 실제 콘솔 화면 출력, output.c
+﻿// 실제 콘솔 화면 출력, output.c
 
 #include <stdio.h>
 #include "constant.h"
+#include "output.h"
+#include <Windows.h>
 
-void render_map(char map[][mapSize + 1]);
-
-
-
-void render_map(char map[][mapSize + 1])
+void render_map(char map[][MAPSIZE + 1])
 {
 	int i, j;
 
-	for (i = 0; i < mapSize; i++)
+	for (i = 0; i < MAPSIZE; i++)
 		printf("\n");
-		for (j = 0; j < mapSize; j++)
+		for (j = 0; j < MAPSIZE; j++)
 		{
 			printf("%c ", map[i][j]);
 		}
+}
+
+void show_start_menu()
+{
+	system("cls");
+
+	printf("\n\n\n");
+
+	printf("                    ██████╗ ██████╗ ███████╗ █████╗ ██╗  ██╗\n");
+	printf("                    ██╔══██╗██╔══██╗██╔════╝██╔══██╗██║ ██╔╝\n");
+	printf("                    ██████╔╝██████╔╝█████╗  ███████║█████╔╝ \n");
+	printf("                    ██╔══██╗██╔══██╗██╔══╝  ██╔══██║██╔═██╗ \n");
+	printf("                    ██████╔╝██║  ██║███████╗██║  ██║██║  ██╗\n");
+	printf("                    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝\n");
+
+	printf("\n\n");
+
+	printf("                               BREAK\n");
+
+	printf("\n\n\n");
+
+	printf("                         [1] EASY\n");
+	printf("                         [2] NORMAL\n");
+	printf("                         [3] HARD\n");
+	printf("                         [ESC] EXIT\n");
+
+	printf("\n\n");
+
+	printf("                      난이도를 선택하세요 : ");
 }
