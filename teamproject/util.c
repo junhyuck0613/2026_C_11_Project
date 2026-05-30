@@ -4,3 +4,21 @@
 #include <stdlib.h>
 #include <time.h>
 #include "constant.h"
+
+extern char map[MAPSIZE][MAPSIZE + 1];
+const int flagsPerLevel[4] = { 1, 2, 3 };
+
+void place_flags(int level)
+{
+	int i;
+
+	for (i = 0; i < flagsPerLevel[level]; i++)
+	{
+		int x = rand() % MAPSIZE;
+		int y = rand() % MAPSIZE;
+		if (map[x][y] == LAND)
+			map[x][y] = FLAG;
+		else
+			i--;
+	}
+}

@@ -5,16 +5,20 @@
 #include "output.h"
 #include <Windows.h>
 
-void render_map(char map[][MAPSIZE + 1])
+extern char map[MAPSIZE][MAPSIZE + 1];
+
+void render_map()
 {
 	int i, j;
 
 	for (i = 0; i < MAPSIZE; i++)
+	{
 		printf("\n");
 		for (j = 0; j < MAPSIZE; j++)
 		{
 			printf("%c ", map[i][j]);
 		}
+	}
 }
 
 void show_start_menu()

@@ -36,6 +36,9 @@
     <ClCompile Include="util.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="item_joonwoo.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constant.h">
@@ -48,6 +51,9 @@
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="output.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>

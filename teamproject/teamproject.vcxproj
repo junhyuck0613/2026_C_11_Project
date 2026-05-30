@@ -131,6 +131,9 @@
     <ClCompile Include="enemy.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="input.c" />
+    <ClCompile Include="item_joonwoo.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="main.c" />
     <ClCompile Include="map.c" />
     <ClCompile Include="output.c" />
@@ -141,6 +144,7 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="output.h" />
+    <ClInclude Include="util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

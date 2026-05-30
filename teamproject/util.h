@@ -1,0 +1,1 @@
+void place_flags(int level);

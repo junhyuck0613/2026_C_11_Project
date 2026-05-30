@@ -10,7 +10,6 @@ static char itemKey[10] = { 0 };
 int get_input()
 {
 
-
 	int input = _getch();
 
 	if (input == 224 || input == 0)

@@ -1,5 +1,5 @@
 #include "constant.h"
 #include "map.h"
 
-void render_map(char map[][MAPSIZE + 1]);
+void render_map();
 void show_start_menu();

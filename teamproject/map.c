@@ -5,9 +5,8 @@
 #include "constant.h"
 #include "map.h"
 
-static char map[MAPSIZE][MAPSIZE + 1] = { 0 };
+extern char map[MAPSIZE][MAPSIZE + 1] = { 0 };
 static int playerLocation[2] = { 9 ,1 };
-const int flagsPerLevel[4] = { 1, 2, 3 };
 
 int player_movement(char dir)
 {
@@ -111,19 +110,4 @@ void init_map()
 	for (i = 0; i < MAPSIZE; i++)
 		for (j = 0; j < MAPSIZE; j++)
 			map[i][j] = LAND;
-}
-
-void place_flags(int level)
-{
-	int i;
-
-	for (i = 0; i < flagsPerLevel[level]; i++)
-	{
-		int x = rand() % MAPSIZE;
-		int y = rand() % MAPSIZE;
-		if (map[x][y] == LAND)
-			map[x][y] = FLAG;
-		else
-			i--;
-	}
 }
