@@ -8,7 +8,7 @@
 extern char map[MAPSIZE][MAPSIZE + 1] = { 0 };
 static int playerLocation[2] = { 9 ,1 };
 
-int player_movement(char dir)
+int player_movement(int dir)
 {
 	switch (dir)
 	{

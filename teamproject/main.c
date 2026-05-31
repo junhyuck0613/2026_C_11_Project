@@ -2,28 +2,14 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <stdio.h>
-#include <Windows.h>
-#include <time.h>
+#include "game.h"
 #include "output.h"
-#include "input.h"
-#include "map.h"
 
 int main()
 {
-	int level = 0;
+	init_game();
 
-	SetConsoleOutputCP(CP_UTF8);
-	srand((unsigned int)time(NULL));
-
-	init_map();
-	locate_player();
-
-	show_start_menu();
-	
-	scanf("%d", &level);
-
-	place_flags(level - 1);
+	start_menu();
 
 	render_map();
 

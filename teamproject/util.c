@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "constant.h"
+#include "util.h"
 
 extern char map[MAPSIZE][MAPSIZE + 1];
 const int flagsPerLevel[4] = { 1, 2, 3 };

@@ -49,3 +49,10 @@ void show_start_menu()
 
 	printf("                      난이도를 선택하세요 : ");
 }
+
+void show_menu()
+{
+	printf("                         MENU\n");
+	printf("					 [1] RESTART\n");
+	printf("					 [ESC] EXIT\n");
+}
