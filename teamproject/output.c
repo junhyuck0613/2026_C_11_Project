@@ -10,15 +10,23 @@ extern char map[MAPSIZE][MAPSIZE + 1];
 void render_map()
 {
 	int y, x;
+	char line[MAPSIZE * 3 + 2];
 
 	for (y = 0; y < MAPSIZE; y++)
 	{
-		printf("\n");
+		int pos = 0;
 
 		for (x = 0; x < MAPSIZE; x++)
 		{
-			printf(" %c ", map[y][x]);
+			line[pos++] = ' ';
+			line[pos++] = map[y][x];
+			line[pos++] = ' ';
 		}
+
+		line[pos++] = '\n';
+		line[pos] = '\0';
+
+		printf("%s", line);
 	}
 }
 
