@@ -1,1 +1,2 @@
-
+void ActivateDoubleMoveItem();
+void UpdateDoubleMoveItem();
