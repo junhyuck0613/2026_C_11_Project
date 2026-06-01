@@ -9,14 +9,15 @@ extern char map[MAPSIZE][MAPSIZE + 1];
 
 void render_map()
 {
-	int i, j;
+	int y, x;
 
-	for (i = 0; i < MAPSIZE; i++)
+	for (y = 0; y < MAPSIZE; y++)
 	{
 		printf("\n");
-		for (j = 0; j < MAPSIZE; j++)
+
+		for (x = 0; x < MAPSIZE; x++)
 		{
-			printf("%c ", map[i][j]);
+			printf(" %c ", map[y][x]);
 		}
 	}
 }

@@ -5,15 +5,16 @@
 #include "constant.h"
 #include "map.h"
 
+
 extern char map[MAPSIZE][MAPSIZE + 1] = { 0 };
-static int playerLocation[2] = { 9 ,1 };
+static int playerLocation[2] = { 1 , 9}; // x, y
 
 int player_movement(int dir)
 {
 	switch (dir)
 	{
 	case 72: // 상
-		if (playerLocation[1] == 1)
+		if (playerLocation[1] == 0)
 			return 0;
 		else
 		{
@@ -24,7 +25,7 @@ int player_movement(int dir)
 		}
 
 	case 75: // 좌
-		if (playerLocation[0] == 1)
+		if (playerLocation[0] == 0)
 			return 0;
 		else
 		{
@@ -35,7 +36,7 @@ int player_movement(int dir)
 		}
 
 	case 80: // 하
-		if (playerLocation[1] == MAPSIZE)
+		if (playerLocation[1] == MAPSIZE - 1)
 			return 0;
 		else
 		{
@@ -46,7 +47,7 @@ int player_movement(int dir)
 		}
 
 	case 77: // 우
-		if (playerLocation[0] == MAPSIZE)
+		if (playerLocation[0] == MAPSIZE - 1)
 			return 0;
 		else
 		{
@@ -95,19 +96,23 @@ int can_move(char dir, int playerLocation[])
 
 void locate_player()
 {
-	map[playerLocation[0]][playerLocation[1]] = PLAYER;
+	map[playerLocation[1]][playerLocation[0]] = PLAYER;
 }
 
 void delete_player()
 {
-	map[playerLocation[0]][playerLocation[1]] = LAND;
+	map[playerLocation[1]][playerLocation[0]] = LAND;
 }
 
 void init_map()
 {
-	int i, j;
+	int y, x;
 
-	for (i = 0; i < MAPSIZE; i++)
-		for (j = 0; j < MAPSIZE; j++)
-			map[i][j] = LAND;
+	for (y = 0; y < MAPSIZE; y++)
+	{
+		for (x = 0; x < MAPSIZE; x++)
+		{
+			map[y][x] = LAND;
+		}
+	}
 }

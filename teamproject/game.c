@@ -10,6 +10,8 @@
 #include "map.h"
 #include "game.h"
 
+extern char map[MAPSIZE][MAPSIZE + 1];
+
 void init_game()
 {
 	SetConsoleOutputCP(CP_UTF8);
@@ -38,9 +40,10 @@ void game_loop()
 	while (1)
 	{
 		int input = get_input();
+		system("cls");
 		if (input == 27) // ESC 키
 			break;
 		player_movement(input);
-		render_map();
+		render_map(&map);
 	}
 }

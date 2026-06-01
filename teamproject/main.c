@@ -4,6 +4,7 @@
 
 #include "game.h"
 #include "output.h"
+#include <Windows.h>
 
 int main()
 {
@@ -11,7 +12,11 @@ int main()
 
 	start_menu();
 
+	system("cls");
 	render_map();
+
+
+	game_loop();
 
 	return 0;
 }
