@@ -6,7 +6,7 @@
 #include "constant.h"
 #include "util.h"
 
-extern char map[MAPSIZE][MAPSIZE + 1];
+extern char map[MAPSIZE][MAPSIZE];
 const int flagsPerLevel[4] = { 1, 2, 3 };
 
 void place_flags(int level)
@@ -23,3 +23,4 @@ void place_flags(int level)
 			i--;
 	}
 }
+

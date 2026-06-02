@@ -4,6 +4,7 @@
 #include "constant.h"
 #include "output.h"
 #include <Windows.h>
+#include <conio.h>
 
 extern char map[MAPSIZE][MAPSIZE + 1];
 
@@ -15,7 +16,6 @@ void render_map()
 	for (y = 0; y < MAPSIZE; y++)
 	{
 		int pos = 0;
-
 		for (x = 0; x < MAPSIZE; x++)
 		{
 			line[pos++] = ' ';
@@ -64,4 +64,15 @@ void show_menu()
 	printf("                         MENU\n");
 	printf("					 [1] RESTART\n");
 	printf("					 [ESC] EXIT\n");
+}
+
+void show_story(char ** str, int count)
+{
+	int i;
+
+	for (i = 0; i < count; i++)
+	{
+		printf("%s\n", str[i]);
+		_getch();
+	}
 }

@@ -6,7 +6,7 @@
 #include "map.h"
 
 
-extern char map[MAPSIZE][MAPSIZE + 1] = { 0 };
+char map[MAPSIZE][MAPSIZE] = { 0 };
 static int playerLocation[2] = { 1 , 9}; // x, y
 
 int player_movement(int dir)

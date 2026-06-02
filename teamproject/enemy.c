@@ -1,4 +1,8 @@
 //적 및 공격, enemy.c
+
+#include <stdio.h>
+#include "constant.h"
+
 //적 정지 아이템 깃발을 밟았을 때 실행
 void ActivateStopEnemyItem(int* enemyStopTurn)
 {
@@ -21,7 +25,7 @@ void UpdateEnemyStopItem(int* enemyStopTurn)
 }
 
 //움직이는 적을 매 턴마다 랜덤 방향으로 이동시키는 함
-void MoveEnemy(int map[][MAX_SIZE], int mapSize, int* enemyX, int* enemyY)
+void MoveEnemy(int map[][MAPSIZE], int mapSize, int* enemyX, int* enemyY)
 {
     int dx[4] = { 0, 0, -1, 1 };
     int dy[4] = { -1, 1, 0, 0 };
