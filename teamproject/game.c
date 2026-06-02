@@ -11,6 +11,7 @@
 #include "game.h"
 
 extern char map[MAPSIZE][MAPSIZE + 1];
+int level;
 
 void init_game()
 {
@@ -23,16 +24,14 @@ void init_game()
 
 void start_menu()
 {
-	int level;
-	show_start_menu();
-	scanf("%d", &level); // 난이도 선택 방향키로 받는 걸로 수정해야 함
+	level = show_start_menu();
 
 	set_difficulty(level);
 }
 
 void set_difficulty(int level)
 {
-	place_flags(level - 1);
+	place_flags(level);
 }
 
 void game_loop()
@@ -42,7 +41,6 @@ void game_loop()
 		int input = get_input();
 		system("cls");
 		if (input == 27) // ESC 키 누르면 메뉴 나오게.
-			break;
 		player_movement(input);
 		render_map();
 		//깃발 전부 사라지면 다음 스토리 나오고 다음 난이도로.

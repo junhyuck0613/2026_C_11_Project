@@ -128,7 +128,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="enemy.c" />
+    <ClCompile Include="enemy.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="game.c" />
     <ClCompile Include="input.c" />
     <ClCompile Include="item_joonwoo.c">

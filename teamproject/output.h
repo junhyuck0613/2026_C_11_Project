@@ -1,5 +1,4 @@
-#include "constant.h"
-#include "map.h"
-
 void render_map();
-void show_start_menu();
+int show_start_menu();
+void show_menu();
+void show_story(char** str, int count);

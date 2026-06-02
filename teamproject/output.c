@@ -3,10 +3,11 @@
 #include <stdio.h>
 #include "constant.h"
 #include "output.h"
+#include "input.h"
 #include <Windows.h>
 #include <conio.h>
 
-extern char map[MAPSIZE][MAPSIZE + 1];
+extern char map[MAPSIZE][MAPSIZE];
 
 void render_map()
 {
@@ -30,33 +31,65 @@ void render_map()
 	}
 }
 
-void show_start_menu()
+int show_start_menu()
 {
-	system("cls");
+	char* levelMenu[] =
+	{
+		"EASY",
+		"NORMAL",
+		"HARD",
+		"EXIT"
+	};
+	int i, input, select = 0;
 
-	printf("\n\n\n");
+	while (1)
+	{
+		system("cls");
 
-	printf("                    ██████╗ ██████╗ ███████╗ █████╗ ██╗  ██╗\n");
-	printf("                    ██╔══██╗██╔══██╗██╔════╝██╔══██╗██║ ██╔╝\n");
-	printf("                    ██████╔╝██████╔╝█████╗  ███████║█████╔╝ \n");
-	printf("                    ██╔══██╗██╔══██╗██╔══╝  ██╔══██║██╔═██╗ \n");
-	printf("                    ██████╔╝██║  ██║███████╗██║  ██║██║  ██╗\n");
-	printf("                    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝\n");
+		printf("\n\n\n");
 
-	printf("\n\n");
+		printf("                    ██████╗ ██████╗ ███████╗ █████╗ ██╗  ██╗\n");
+		printf("                    ██╔══██╗██╔══██╗██╔════╝██╔══██╗██║ ██╔╝\n");
+		printf("                    ██████╔╝██████╔╝█████╗  ███████║█████╔╝ \n");
+		printf("                    ██╔══██╗██╔══██╗██╔══╝  ██╔══██║██╔═██╗ \n");
+		printf("                    ██████╔╝██║  ██║███████╗██║  ██║██║  ██╗\n");
+		printf("                    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝\n");
 
-	printf("                               BREAK\n");
+		printf("\n\n");
 
-	printf("\n\n\n");
+		printf("                               BREAK\n");
 
-	printf("                         [1] EASY\n");
-	printf("                         [2] NORMAL\n");
-	printf("                         [3] HARD\n");
-	printf("                         [ESC] EXIT\n");
+		printf("\n\n\n");
 
-	printf("\n\n");
+		for (i = 0; i < 4; i++)
+		{
+			if (select == i)
+				printf("                       > %s\n", levelMenu[i]);
+			else printf("                         %s\n", levelMenu[i]);
+		}
 
-	printf("                      난이도를 선택하세요 : ");
+		while (1)
+		{
+			input = get_input();
+
+			switch (input)
+			{
+			case 72:
+				if (select != 0)
+					select--;
+				break;
+			case 80:
+				if (select != 3)
+					select++;
+				break;
+			case 13:
+				return select;
+			default:
+				continue;
+			}
+			break;
+		}
+	}	
 }
 
 void show_menu()
