@@ -11,7 +11,7 @@
 #include "game.h"
 
 extern char map[MAPSIZE][MAPSIZE + 1];
-int level;
+static int level;
 
 void init_game()
 {
@@ -29,7 +29,7 @@ void start_menu()
 	set_difficulty(level);
 }
 
-void set_difficulty(int level)
+void set_difficulty()
 {
 	place_flags(level);
 }
