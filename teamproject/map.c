@@ -21,7 +21,7 @@ int player_movement(int dir, int * moveCount)
 			delete_player(playerLocation, map);
 			playerLocation[1] -= 1;
 			locate_player(playerLocation, map);
-			moveCount--;
+			(*moveCount)--;
 			return 1;
 		}
 
@@ -33,7 +33,7 @@ int player_movement(int dir, int * moveCount)
 			delete_player(playerLocation, map);
 			playerLocation[0] -= 1;
 			locate_player(playerLocation, map);
-			moveCount--;
+			(*moveCount)--;
 			return 1;
 		}
 
@@ -45,7 +45,7 @@ int player_movement(int dir, int * moveCount)
 			delete_player(playerLocation, map);
 			playerLocation[1] += 1;
 			locate_player(playerLocation, map);
-			moveCount--;
+			(*moveCount)--;
 			return 1;
 		}
 
@@ -57,7 +57,7 @@ int player_movement(int dir, int * moveCount)
 			delete_player(playerLocation, map);
 			playerLocation[0] += 1;
 			locate_player(playerLocation, map);
-			moveCount--;
+			(*moveCount)--;
 			return 1;
 		}
 

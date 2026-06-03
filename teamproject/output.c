@@ -159,7 +159,15 @@ void show_game_over()
 	printf("                    ╚═╝     ╚═╝  ╚═╝╚═╝╚══════╝\n");
 	printf("                             FAIL..\n");
 
-	printf("\n\nPRESS ANY KEY TO CONTINUE.");
+	printf("\n\nPRESS ENTER TO CONTINUE.");
 
-	_getch();
+	while (_getch() != 13)
+	{
+	}
+}
+
+void print_moveCount(int * moveCount)
+{
+	printf("\n\n");
+	printf("Moves Left: %d", *moveCount);
 }

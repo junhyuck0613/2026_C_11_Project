@@ -33,13 +33,20 @@ void start_menu()
 		exit(0);
 
 	set_difficulty(level);
-	system("cls");
-	render_map();
+	show_game_menu();
 }
 
 void set_difficulty()
 {
 	place_flags(level);
+	moveCount = moveNum[level];
+}
+
+void show_game_menu()
+{
+	system("cls");
+	render_map();
+	print_moveCount(&moveCount);
 }
 
 void game_loop()
@@ -63,11 +70,13 @@ void game_loop()
 			}
 				
 		}
+
 		player_movement(input, & moveCount);
-		render_map();
-		if (isDie == 1 || moveCount == 0)
+		show_game_menu();
+
+		if (isDie != 0 || moveCount == 0)
 		{
-			Sleep(1000);
+			Sleep(300);
 			show_game_over();
 			start_menu();
 		}
