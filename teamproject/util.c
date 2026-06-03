@@ -6,8 +6,18 @@
 #include "constant.h"
 #include "util.h"
 
+struct flag
+{
+	int x, y;
+	int effect;
+	int id; // 1이면 골
+};
+
 extern char map[MAPSIZE][MAPSIZE];
-const int flagsPerLevel[4] = { 5, 10, 15 };
+const int flagsPerLevel[3] = { 5, 10, 15 };
+struct flag flags[MAXFLAG] = { 0 };
+
+// 시간 정지, 대시. 보호막, 턴 수 +, 목표지점 힌트, 적 추가, 이동 횟수 감소, 시야 감소, 레이저 빈도 증가, 아이템 사라짐
 
 void place_flags(int level)
 {
@@ -17,10 +27,41 @@ void place_flags(int level)
 	{
 		int x = rand() % MAPSIZE;
 		int y = rand() % MAPSIZE;
-		if (map[x][y] == LAND)
-			map[x][y] = FLAG;
+		if (map[y][x] == LAND)
+			map[y][x] = FLAG;
 		else
+		{
 			i--;
+			continue;
+		}
+		flags[i].x = x;
+		flags[i].y = y;
+		flags[i].effect = rand() % 10;
+		flags[i].id = i+1;
 	}
 }
 
+int find_flag(int x, int y)
+{
+	for (int i = 0; i < MAXFLAG; i++)
+	{
+		if (flags[i].x == x &&
+			flags[i].y == y)
+			return i;
+	}
+
+	return -1;
+}
+
+int get_tile_info(int player[])
+{
+	switch (map[player[1]][player[0]])
+	{
+	case LAND:
+		return 0;
+	case FLAG:
+		return find_flag(player[0], player[1]);
+	default: //적이나 레이저
+		return -1;
+	}
+}

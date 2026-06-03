@@ -4,9 +4,6 @@
 #include <conio.h>
 #include "input.h"
 
-static int moveKey[4] = { 72, 75, 80, 77 }; // 상 좌 하 우
-static char itemKey[10] = { 0 };
-
 int get_input()
 {
 

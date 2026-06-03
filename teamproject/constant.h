@@ -4,3 +4,4 @@
 #define PLAYER '@'
 #define FLAG 'F'
 #define LAND '*'
+#define MAXFLAG 15

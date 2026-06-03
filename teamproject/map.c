@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "constant.h"
 #include "map.h"
+#include "util.c"
 
 
 char map[MAPSIZE][MAPSIZE] = { 0 };
@@ -11,6 +12,7 @@ static int playerLocation[2] = { 1 , 9}; // x, y
 
 int player_movement(int dir, int * moveCount)
 {
+	int temp;
 	switch (dir)
 	{
 	case 72: // 상
@@ -18,11 +20,12 @@ int player_movement(int dir, int * moveCount)
 			return 0;
 		else
 		{
-			delete_player(playerLocation, map);
+			delete_player();
 			playerLocation[1] -= 1;
-			locate_player(playerLocation, map);
+			temp = get_tile_info(*playerLocation);
+			locate_player();
 			(*moveCount)--;
-			return 1;
+			return temp;
 		}
 
 	case 75: // 좌
@@ -30,11 +33,12 @@ int player_movement(int dir, int * moveCount)
 			return 0;
 		else
 		{
-			delete_player(playerLocation, map);
+			delete_player();
 			playerLocation[0] -= 1;
-			locate_player(playerLocation, map);
+			temp = get_tile_info(*playerLocation);
+			locate_player();
 			(*moveCount)--;
-			return 1;
+			return temp;
 		}
 
 	case 80: // 하
@@ -42,11 +46,12 @@ int player_movement(int dir, int * moveCount)
 			return 0;
 		else
 		{
-			delete_player(playerLocation, map);
+			delete_player();
 			playerLocation[1] += 1;
-			locate_player(playerLocation, map);
+			temp = get_tile_info(*playerLocation);
+			locate_player();
 			(*moveCount)--;
-			return 1;
+			return temp;
 		}
 
 	case 77: // 우
@@ -54,17 +59,13 @@ int player_movement(int dir, int * moveCount)
 			return 0;
 		else
 		{
-			delete_player(playerLocation, map);
-			playerLocation[0] += 1;
-			locate_player(playerLocation, map);
+			delete_player();
+			temp = get_tile_info(*playerLocation);
+			locate_player();
 			(*moveCount)--;
-			return 1;
+			return temp;
 		}
-
-		return 0;
 	}
-
-	return 0;
 }
 
 /*
