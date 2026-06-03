@@ -13,8 +13,5 @@ int main()
 
 	start_menu();
 
-	system("cls");
-	render_map();
-
 	game_loop();
 }

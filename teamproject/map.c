@@ -9,7 +9,7 @@
 char map[MAPSIZE][MAPSIZE] = { 0 };
 static int playerLocation[2] = { 1 , 9}; // x, y
 
-int player_movement(int dir)
+int player_movement(int dir, int * moveCount)
 {
 	switch (dir)
 	{
@@ -21,6 +21,7 @@ int player_movement(int dir)
 			delete_player(playerLocation, map);
 			playerLocation[1] -= 1;
 			locate_player(playerLocation, map);
+			moveCount--;
 			return 1;
 		}
 
@@ -32,6 +33,7 @@ int player_movement(int dir)
 			delete_player(playerLocation, map);
 			playerLocation[0] -= 1;
 			locate_player(playerLocation, map);
+			moveCount--;
 			return 1;
 		}
 
@@ -43,6 +45,7 @@ int player_movement(int dir)
 			delete_player(playerLocation, map);
 			playerLocation[1] += 1;
 			locate_player(playerLocation, map);
+			moveCount--;
 			return 1;
 		}
 
@@ -54,6 +57,7 @@ int player_movement(int dir)
 			delete_player(playerLocation, map);
 			playerLocation[0] += 1;
 			locate_player(playerLocation, map);
+			moveCount--;
 			return 1;
 		}
 

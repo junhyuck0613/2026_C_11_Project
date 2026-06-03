@@ -146,3 +146,20 @@ void show_story(char ** str, int count) // 스토리 따로 파일 만들어서 
 		_getch();
 	}
 }
+
+void show_game_over()
+{
+	system("cls");
+
+	printf("                    ███████╗ █████╗ ██╗██╗     \n");
+	printf("                    ██╔════╝██╔══██╗██║██║     \n");
+	printf("                    █████╗  ███████║██║██║     \n");
+	printf("                    ██╔══╝  ██╔══██║██║██║     \n");
+	printf("                    ██║     ██║  ██║██║███████╗\n");
+	printf("                    ╚═╝     ╚═╝  ╚═╝╚═╝╚══════╝\n");
+	printf("                             FAIL..\n");
+
+	printf("\n\nPRESS ANY KEY TO CONTINUE.");
+
+	_getch();
+}

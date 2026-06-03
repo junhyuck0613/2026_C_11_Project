@@ -1,6 +1,6 @@
 #include "constant.h"
 
-int player_movement(char dir);
+int player_movement(int dir, int* moveCount);
 //int can_move(char dir, int playerLocation[]);
 void locate_player();
 void delete_player();

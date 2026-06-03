@@ -13,6 +13,8 @@
 
 extern char map[MAPSIZE][MAPSIZE + 1];
 static int level;
+static int moveNum[3] = { 10, 20, 30 };
+static int moveCount;
 
 void init_game()
 {
@@ -31,6 +33,8 @@ void start_menu()
 		exit(0);
 
 	set_difficulty(level);
+	system("cls");
+	render_map();
 }
 
 void set_difficulty()
@@ -40,6 +44,7 @@ void set_difficulty()
 
 void game_loop()
 {
+	int isDie = 0;
 	while (1)
 	{
 		int input = get_input();
@@ -50,8 +55,6 @@ void game_loop()
 			if (temp == 0)
 			{
 				start_menu();
-				system("cls");
-				render_map();
 				continue;
 			}
 			if (temp == 1)
@@ -60,8 +63,14 @@ void game_loop()
 			}
 				
 		}
-		player_movement(input);
+		player_movement(input, & moveCount);
 		render_map();
+		if (isDie == 1 || moveCount == 0)
+		{
+			Sleep(1000);
+			show_game_over();
+			start_menu();
+		}
 		//깃발 전부 사라지면 다음 스토리 나오고 다음 난이도로.
 	}
-}
+} 
