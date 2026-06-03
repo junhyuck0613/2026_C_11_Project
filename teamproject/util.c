@@ -6,12 +6,7 @@
 #include "constant.h"
 #include "util.h"
 
-struct flag
-{
-	int x, y;
-	int effect;
-	int id; // 1이면 골
-};
+// struct flag is declared in util.h
 
 extern char map[MAPSIZE][MAPSIZE];
 const int flagsPerLevel[3] = { 5, 10, 15 };

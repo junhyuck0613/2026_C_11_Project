@@ -15,6 +15,7 @@ extern char map[MAPSIZE][MAPSIZE + 1];
 static int level;
 const int moveNum[3] = { 10, 20, 30 };
 static int moveCount;
+static int isDie;
 
 void init_game()
 {
@@ -51,9 +52,21 @@ void show_game()
 	print_moveCount(&moveCount);
 }
 
+void check_event(int tileInfo)
+{
+	switch (tileInfo)
+	{
+	case -1:
+		isDie = 1;
+	case 0:
+		return 0;
+		//이 아래에 쭉 아이템, 벌칙 추가하기
+	}
+}
+
 void game_loop()
 {
-	int isDie = 0, tileInfo;
+	int tileInfo;
 	while (1)
 	{
 		int input = get_input();

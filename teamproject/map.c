@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "constant.h"
 #include "map.h"
-#include "util.c"
+#include "util.h"
 
 
 char map[MAPSIZE][MAPSIZE] = { 0 };

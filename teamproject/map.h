@@ -5,4 +5,3 @@ int player_movement(int dir, int* moveCount);
 void locate_player();
 void delete_player();
 void init_map();
-void place_flags(int level);
