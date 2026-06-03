@@ -16,8 +16,5 @@ int main()
 	system("cls");
 	render_map();
 
-
 	game_loop();
-
-	return 0;
 }

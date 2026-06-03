@@ -94,11 +94,11 @@ int show_start_menu()
 
 int show_menu()
 {
-	char* menu = {
-		"RESTART"
+	char* menu[2] = {
+		"RESTART",
 		"EXIT"
 	};
-	int select, input = 0;
+	int select = 0, input = 0;
 
 	while (1)
 	{
@@ -107,9 +107,9 @@ int show_menu()
 		for (int i = 0; i < 2; i++)
 		{
 			if (select == i)
-				printf("                     > %s", menu[i]);
+				printf("                     > %s\n", menu[i]);
 			else
-				printf("                       %s", menu[i]);
+				printf("                       %s\n", menu[i]);
 		}
 
 		while (1)
@@ -136,7 +136,7 @@ int show_menu()
 	}
 }
 
-void show_story(char ** str, int count)
+void show_story(char ** str, int count) // 스토리 따로 파일 만들어서 쓴 후에 game.c 나 main.c 에서 실행시키기.
 {
 	int i;
 

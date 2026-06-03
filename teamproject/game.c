@@ -50,12 +50,13 @@ void game_loop()
 			if (temp == 0)
 			{
 				start_menu();
+				system("cls");
 				render_map();
 				continue;
 			}
 			if (temp == 1)
 			{
-				break;
+				exit(0);
 			}
 				
 		}
