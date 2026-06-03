@@ -8,7 +8,7 @@
 
 
 char map[MAPSIZE][MAPSIZE] = { 0 };
-static int playerLocation[2] = { 1 , 9}; // x, y
+static int playerLocation[2] = { 4 , 9}; // x, y
 
 int player_movement(int dir, int * moveCount)
 {
@@ -22,7 +22,7 @@ int player_movement(int dir, int * moveCount)
 		{
 			delete_player();
 			playerLocation[1] -= 1;
-			temp = get_tile_info(*playerLocation);
+			temp = get_tile_info(playerLocation);
 			locate_player();
 			(*moveCount)--;
 			return temp;
@@ -35,7 +35,7 @@ int player_movement(int dir, int * moveCount)
 		{
 			delete_player();
 			playerLocation[0] -= 1;
-			temp = get_tile_info(*playerLocation);
+			temp = get_tile_info(playerLocation);
 			locate_player();
 			(*moveCount)--;
 			return temp;
@@ -48,7 +48,7 @@ int player_movement(int dir, int * moveCount)
 		{
 			delete_player();
 			playerLocation[1] += 1;
-			temp = get_tile_info(*playerLocation);
+			temp = get_tile_info(playerLocation);
 			locate_player();
 			(*moveCount)--;
 			return temp;
@@ -60,7 +60,8 @@ int player_movement(int dir, int * moveCount)
 		else
 		{
 			delete_player();
-			temp = get_tile_info(*playerLocation);
+			temp = get_tile_info(playerLocation);
+			playerLocation[0] += 1;
 			locate_player();
 			(*moveCount)--;
 			return temp;

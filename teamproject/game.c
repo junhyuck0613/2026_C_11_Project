@@ -11,7 +11,7 @@
 #include "map.h"
 #include "game.h"
 
-extern char map[MAPSIZE][MAPSIZE + 1];
+extern char map[MAPSIZE][MAPSIZE];
 static int level;
 const int moveNum[3] = { 10, 20, 30 };
 static int moveCount;
@@ -58,8 +58,9 @@ void check_event(int tileInfo)
 	{
 	case -1:
 		isDie = 1;
+		/* fall through */
 	case 0:
-		return 0;
+		return;
 		//이 아래에 쭉 아이템, 벌칙 추가하기
 	}
 }
