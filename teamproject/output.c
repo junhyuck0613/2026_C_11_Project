@@ -92,11 +92,48 @@ int show_start_menu()
 	}	
 }
 
-void show_menu()
+int show_menu()
 {
-	printf("                         MENU\n");
-	printf("					 [1] RESTART\n");
-	printf("					 [ESC] EXIT\n");
+	char* menu = {
+		"RESTART"
+		"EXIT"
+	};
+	int select, input = 0;
+
+	while (1)
+	{
+		system("cls");
+		printf("                         MENU\n");
+		for (int i = 0; i < 2; i++)
+		{
+			if (select == i)
+				printf("                     > %s", menu[i]);
+			else
+				printf("                       %s", menu[i]);
+		}
+
+		while (1)
+		{
+			input = get_input();
+
+			switch (input)
+			{
+			case 72:
+				if (select != 0)
+					select--;
+				break;
+			case 80:
+				if (select != 1)
+					select++;
+				break;
+			case 13:
+				return select;
+			default:
+				continue;
+			}
+			break;
+		}
+	}
 }
 
 void show_story(char ** str, int count)
