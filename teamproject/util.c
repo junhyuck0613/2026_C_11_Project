@@ -6,17 +6,29 @@
 #include "constant.h"
 #include "util.h"
 
-// struct flag is declared in util.h
-
 extern char map[MAPSIZE][MAPSIZE];
 const int flagsPerLevel[3] = { 5, 10, 15 };
 struct flag flags[MAXFLAG] = { 0 };
+int itemNum[ITEMNUM] = { 0 }; // 시간 정지, 대시, 보호막
+char itemName[ITEMNUM][30] = {
+	"Time Stop",
+	"Dash",
+	"Shield"
+};
 
 // 시간 정지, 대시. 보호막, 턴 수 +, 목표지점 힌트, 적 추가, 이동 횟수 감소, 시야 감소, 레이저 빈도 증가, 아이템 사라짐
 
 void place_flags(int level)
 {
 	int i;
+
+	for (i = 0; i < MAXFLAG; i++)
+	{
+		flags[i].x = 0;
+		flags[i].y = 0;
+		flags[i].effect = 0;
+		flags[i].id = 0;
+	}
 
 	for (i = 0; i < flagsPerLevel[level]; i++)
 	{
@@ -40,9 +52,12 @@ int find_flag(int x, int y)
 {
 	for (int i = 0; i < MAXFLAG; i++)
 	{
-		if (flags[i].x == x &&
+		if (flags[i].id != 0 &&
+			flags[i].x == x &&
 			flags[i].y == y)
-			return i;
+		{
+			return flags[i].id;
+		}
 	}
 
 	return -1;

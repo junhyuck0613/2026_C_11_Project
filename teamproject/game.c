@@ -10,6 +10,7 @@
 #include "input.h"
 #include "map.h"
 #include "game.h"
+#include "util.h"
 
 extern char map[MAPSIZE][MAPSIZE];
 static int level;
@@ -50,6 +51,7 @@ void show_game()
 	system("cls");
 	render_map();
 	print_moveCount(&moveCount);
+	print_item();
 }
 
 void check_event(int tileInfo)
@@ -58,7 +60,6 @@ void check_event(int tileInfo)
 	{
 	case -1:
 		isDie = 1;
-		/* fall through */
 	case 0:
 		return;
 		//이 아래에 쭉 아이템, 벌칙 추가하기
@@ -92,7 +93,7 @@ void game_loop()
 
 		if (isDie != 0 || moveCount == 0)
 		{
-			Sleep(300);
+			Sleep(500);
 			show_game_over();
 			start_menu();
 		}

@@ -9,6 +9,8 @@ struct flag
 
 extern const int flagsPerLevel[3];
 extern struct flag flags[MAXFLAG];
+extern int itemNum[ITEMNUM];
+extern char itemName[ITEMNUM][30];
 
 void place_flags(int level);
 int find_flag(int x, int y);

@@ -60,8 +60,8 @@ int player_movement(int dir, int * moveCount)
 		else
 		{
 			delete_player();
-			temp = get_tile_info(playerLocation);
 			playerLocation[0] += 1;
+			temp = get_tile_info(playerLocation);
 			locate_player();
 			(*moveCount)--;
 			return temp;

@@ -8,6 +8,8 @@
 #include <conio.h>
 
 extern char map[MAPSIZE][MAPSIZE];
+extern int itemNum[ITEMNUM];
+extern char itemName[ITEMNUM][30];
 
 void render_map()
 {
@@ -170,4 +172,15 @@ void print_moveCount(int * moveCount)
 {
 	printf("\n\n");
 	printf("Moves Left: %d", *moveCount);
+}
+
+void print_item()
+{
+	int i;
+	printf("\n");
+	for (i = 0; i < ITEMNUM; i++)
+	{
+		printf("%s: ", itemName[i]);
+		printf("%d ", itemNum[i]);
+	}
 }
