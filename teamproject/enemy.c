@@ -10,27 +10,27 @@ int enemyPerLevel[3] = { 0 , 3, 6 };
 extern int playerLocation[2];
 extern char map[MAPSIZE][MAPSIZE];
 
-int check_enemy_collision(int prevX, int prevY, int currX, int currY)
+int check_enemy_collision(int preX, int preY, int curX, int curY)
 {
     for (int i = 0; i < 10; i++) {
         if (enemies[i].x == 0 && enemies[i].y == 0 && 
-            enemies[i].prevX == 0 && enemies[i].prevY == 0)
+            enemies[i].preX == 0 && enemies[i].preY == 0)
             continue;
 
         // 적이 플레이어 칸에 들어옴
-        if (prevX == enemies[i].prevX && prevY == enemies[i].prevY &&
-            currX == enemies[i].x && currY == enemies[i].y)
+        if (preX == enemies[i].preX && preY == enemies[i].preY &&
+            curX == enemies[i].x && curY == enemies[i].y)
             return 1;
 
         //정면에서 마주침 (위치 교환)
-        if (prevX == enemies[i].x && prevY == enemies[i].y &&
-            currX == enemies[i].prevX && currY == enemies[i].prevY)
+        if (preX == enemies[i].x && preY == enemies[i].y &&
+            curX == enemies[i].preX && curY == enemies[i].preY)
             return 1;
     }
     return 0;
 }
 
-/*
+/*  
 //적 정지 아이템 깃발을 밟았을 때 실행
 void ActivateStopEnemyItem(int* enemyStopTurn)
 {
@@ -102,8 +102,8 @@ void generate_enemy(int level)
     {
         enemies[i].x = 0;
         enemies[i].y = 0;
-        enemies[i].prevX = 0;
-        enemies[i].prevY = 0;
+        enemies[i].preX = 0;
+        enemies[i].preY = 0;
         enemies[i].dir = 0;
     }
 
@@ -121,9 +121,9 @@ void generate_enemy(int level)
 
         enemies[i].x = x;
         enemies[i].y = y;
-        enemies[i].prevX = x;  // 초기 이전 위치도 현재 위치로 설정
-        enemies[i].prevY = y;
-        enemies[i].dir = dir;
+        enemies[i].preX = x;
+        enemies[i].preY = y;
+        enemies[i].dir= dir;
     }
 }
 
@@ -132,8 +132,8 @@ void move_enemy(int num, int canMove)
     if (!canMove)
         return;
 
-    enemies[num].prevX = enemies[num].x;
-    enemies[num].prevY = enemies[num].y;
+    enemies[num].preX = enemies[num].x;
+    enemies[num].preY = enemies[num].y;
 
     switch (enemies[num].dir)
     {
@@ -186,3 +186,4 @@ void move_enemy(int num, int canMove)
         break;
     }
 }
+

@@ -79,7 +79,7 @@ void game_loop()
 	while (1)
 	{
 		int input = get_input();
-		int prevX = playerLocation[0];  // 플레이어 이전 위치 저장
+		int prevX = playerLocation[0];
 		int prevY = playerLocation[1];
 		system("cls");
 		if (input == 27)

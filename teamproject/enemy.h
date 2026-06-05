@@ -1,6 +1,6 @@
 struct enemy {
 	int x, y;
-	int prevX, prevY;
+	int preX, preY;
 	int dir; // 0 상, 1 하, 2 좌, 3 우
 };
 

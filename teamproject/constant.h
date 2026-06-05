@@ -8,3 +8,4 @@
 #define ENEMY1 'A'
 #define ENEMY2 'B'
 #define ITEMNUM 3
+#define LASER '#'
