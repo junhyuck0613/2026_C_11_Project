@@ -5,10 +5,17 @@
 #include "constant.h"
 #include "map.h"
 #include "util.h"
+#include "enemy.h"
 
 
 char map[MAPSIZE][MAPSIZE] = { 0 };
-static int playerLocation[2] = { 4 , 9}; // x, y
+int playerLocation[2] = { 4 , 9}; // x, y
+
+void reset_player_location()
+{
+	playerLocation[0] = 4;
+	playerLocation[1] = 9;
+}
 
 int player_movement(int dir, int * moveCount)
 {
@@ -120,5 +127,36 @@ void init_map()
 		{
 			map[y][x] = LAND;
 		}
+	}
+}
+
+void place_enemy(int num)
+{
+	map[enemies[num].y][enemies[num].x] = ENEMY1;
+}
+
+void delete_enemy(int num)
+{
+	map[enemies[num].y][enemies[num].x] = LAND;
+}
+
+void place_all_enemy(int level)
+{
+	int i;
+	for (i = 0; i < enemyPerLevel[level]; i++)
+	{
+		place_enemy(i);
+	}
+}
+
+void enemy_movement(int level, int canMove)
+{
+	int i;
+	
+	for (i = 0; i < enemyPerLevel[level]; i++)
+	{
+		delete_enemy(i);
+		move_enemy(i, canMove);
+		place_enemy(i);
 	}
 }

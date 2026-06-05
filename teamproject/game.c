@@ -11,12 +11,15 @@
 #include "map.h"
 #include "game.h"
 #include "util.h"
+#include "enemy.h"
 
 extern char map[MAPSIZE][MAPSIZE];
+extern int playerLocation[2];  // 플레이어 위치 접근용
 static int level;
 const int moveNum[3] = { 10, 20, 30 };
 static int moveCount;
 static int isDie;
+static int canMove = 1;
 
 void init_game()
 {
@@ -29,6 +32,7 @@ void init_game()
 
 void start_menu()
 {
+	isDie = 0;  // 게임 시작 전 초기화
 	level = show_start_menu();
 
 	if (level == 3)
@@ -41,9 +45,12 @@ void start_menu()
 
 void set_difficulty()
 {
+	reset_player_location();
 	init_map();
 	place_flags(level);
 	moveCount = moveNum[level];
+	generate_enemy(level);
+	place_all_enemy(level);
 }
 
 void show_game()
@@ -61,7 +68,7 @@ void check_event(int tileInfo)
 	case -1:
 		isDie = 1;
 	case 0:
-		return;
+		break;
 		//이 아래에 쭉 아이템, 벌칙 추가하기
 	}
 }
@@ -72,6 +79,8 @@ void game_loop()
 	while (1)
 	{
 		int input = get_input();
+		int prevX = playerLocation[0];  // 플레이어 이전 위치 저장
+		int prevY = playerLocation[1];
 		system("cls");
 		if (input == 27)
 		{
@@ -85,10 +94,21 @@ void game_loop()
 			{
 				exit(0);
 			}
-				
+
 		}
 
+		enemy_movement(level, canMove);
 		tileInfo = player_movement(input, & moveCount);
+
+		// tileInfo가 -1이거나 적과의 충돌이 있으면 게임오버
+		if (tileInfo == -1 || check_enemy_collision(prevX, prevY, playerLocation[0], playerLocation[1]))
+		{
+			isDie = 1;
+		}
+		else
+		{
+			check_event(tileInfo);
+		}
 		show_game();
 
 		if (isDie != 0 || moveCount == 0)
