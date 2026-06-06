@@ -95,3 +95,14 @@ void activate_reduce_vision(int turn)
 	visionRange = 3;
 	visionTurn = turn;
 }
+
+void use_item(int input)
+{
+	switch (input)
+	{
+	case 'z': //시간 정지
+		break;
+	case 'x': // 대시
+		break;
+	}
+}

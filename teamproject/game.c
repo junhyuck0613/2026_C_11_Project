@@ -131,38 +131,46 @@ void update_vision_effect()
 	}
 }
 
-void check_event(int tileInfo)
+void add_event_message(const char* message)
 {
-	int temp;
-
-	eventMessage[0] = '\0';
-	
-	if (tileInfo == -1) // 보호막 추가해서 그 변수가 있으면 1 줄이고 break 하기
-	{
-		isDie = 1; 
+	if (message == NULL || message[0] == '\0')
 		return;
-	}
 
-	//tileInfo id의 깃발의 효과 적용
-	if (tileInfo > 1)
+	if (eventMessage[0] == '\0')
 	{
-		switch (flags[tileInfo].effect)
+		strcpy_s(eventMessage, sizeof(eventMessage), message);
+	}
+	else
+	{
+		strcat_s(eventMessage, sizeof(eventMessage), "\n");
+		strcat_s(eventMessage, sizeof(eventMessage), message);
+	}
+}
+
+void check_event(int flagId)
+{
+	int temp, event;
+
+
+	if (flagId > 1)
+	{
+		switch (flags[flagId - 1].effect)
 		{
 		case 0: //시간 정지 아이템 획득
 			itemNum[0]++;
-			strcpy_s(eventMessage, sizeof(eventMessage), "시간 정지 획득");
+			add_event_message("시간 정지 획득");
 			break;
 		case 1: 
 			itemNum[1]++; // 대시 아이템 획득
-			strcpy_s(eventMessage, sizeof(eventMessage), "대시 획득");
+			add_event_message("대시 획득");
 			break;
 		case 2: // 보호막 획득
 			itemNum[2]++;
-			strcpy_s(eventMessage, sizeof(eventMessage), "보호막 획득");
+			add_event_message("보호막 획득");
 			break;
 		case 3: //턴 수 +
 			moveCount += 5;
-			strcpy_s(eventMessage, sizeof(eventMessage), "이동가능 횟수 5회 증가");
+			add_event_message("이동가능 횟수 5회 증가");
 			break;
 		case 4: //목표지점 힌트
 			get_flag_hint();
@@ -170,28 +178,28 @@ void check_event(int tileInfo)
 		case 5://적 추가
 			if (level < 1)
 			{
-				printf("적 추가...... 무시됨");
+				add_event_message("적 추가...... 무시됨");
 				break;
 			}
-			generate_one_enemy(find_empty_enemy_slot);
-			strcpy_s(eventMessage, sizeof(eventMessage), "적 추가 등장");
+			generate_one_enemy(find_empty_enemy_slot());
+			add_event_message("적 추가 등장");
 			break;
 		case 6://이동 횟수 감소
 			moveCount += 3;
-			strcpy_s(eventMessage, sizeof(eventMessage), "이동가능 횟수 3회 감소");
+			add_event_message("이동가능 횟수 3회 감소");
 			break;
 		case 7://시야 감소
 			activate_reduce_vision(3);
-			strcpy_s(eventMessage, sizeof(eventMessage), "3회 이동 간 시야 감소..");
+			add_event_message("3회 이동 간 시야 감소..");
 			break;
 		case 8://레이저 추가
 			if (level < 2)
 			{
-				printf("레이저 추가...... 무시됨");
+				add_event_message("레이저 추가...... 무시됨");
 				break;
 			}
 			generate_laser(&laserNum, 1);
-			strcpy_s(eventMessage, sizeof(eventMessage), "레이저 추가 등장");
+			add_event_message("레이저 추가 등장");
 			break;
 		case 9://아이템 사라짐
 			temp = rand() & 3;
@@ -200,22 +208,22 @@ void check_event(int tileInfo)
 			switch (temp)
 			{
 			case 0:
-				strcpy_s(eventMessage, sizeof(eventMessage), "시간 정지 파손");
+				add_event_message("시간 정지 파손");
 				break;
 			case 1:
-				strcpy_s(eventMessage, sizeof(eventMessage), "대시 파손");
+				add_event_message("대시 파손");
 				break;
 			case 2:
-				strcpy_s(eventMessage, sizeof(eventMessage), "보호막 파손");
+				add_event_message("보호막 파손");
 				break;
 			}
 			break;
 		}
 
-		flags[tileInfo - 1].effect = 0;
-		flags[tileInfo - 1].id = 0;
-		flags[tileInfo - 1].x = 0;
-		flags[tileInfo - 1].y = 0;
+		flags[flagId - 1].effect = 0;
+		flags[flagId - 1].id = 0;
+		flags[flagId - 1].x = 0;
+		flags[flagId - 1].y = 0;
 	}
 }
 
@@ -232,7 +240,7 @@ void spawn_laser(int* laserNum, int canLaunch)
 	}
 }
 
-void process_laser(int* laserNum, int canLaunch)
+void process_laser(int* laserNum, int canLaunch, int * isDanger)
 {
 	if (!canLaunch)
 		return;
@@ -260,7 +268,7 @@ void process_laser(int* laserNum, int canLaunch)
 			{
 				if (playerLocation[1] == lasers[i].line)
 				{
-					isDie = 1;
+					(*isDanger) = 1;
 				}
 			}
 			else
@@ -276,9 +284,10 @@ void process_laser(int* laserNum, int canLaunch)
 
 void game_loop()
 {
-	int tileInfo, isMove;
+	int tileInfo, isMove, isDanger = 0;
 	while (1)
 	{
+		isDanger = 0;
 		int input = get_input();
 		int prevX = playerLocation[0];
 		int prevY = playerLocation[1];
@@ -298,23 +307,38 @@ void game_loop()
 
 		}
 
+		eventMessage[0] = '\0';
+
 		place_laser();
 		enemy_movement(canMove);
 		isMove = player_movement(input, & moveCount, &tileInfo);
 
 		if (isMove)
 			update_vision_effect();
-		process_laser(&laserNum, canMove);
+		process_laser(&laserNum, canMove, &isDanger);
 		spawn_laser(&laserNum, canMove);
 
-		// tileInfo가 -1이거나 적과의 충돌이 있으면 게임오버
 		if (tileInfo == -1 || check_enemy_collision(prevX, prevY, playerLocation[0], playerLocation[1]))
 		{
-			isDie = 1;
+			isDanger = 1;
 		}
-		else
+
+		if (isDanger)
 		{
-			check_event(tileInfo);
+			if (itemNum[2] > 0)
+			{
+				itemNum[2]--;
+				add_event_message("보호막이 사용되었습니다.");
+			}
+			else
+			{
+				isDie = 1;
+			}
+		}
+
+		if (!isDie)
+		{
+			check_event(find_flag(playerLocation[0], playerLocation[1]));
 		}
 
 		show_game();
