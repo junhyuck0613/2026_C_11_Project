@@ -12,11 +12,13 @@
 #include "game.h"
 #include "util.h"
 #include "enemy.h"
+#include <conio.h>
+#include <string.h>
 
 extern char map[MAPSIZE][MAPSIZE];
 extern int playerLocation[2];
 static int level;
-const int moveNum[3] = { 10, 20, 30 };
+const int moveNum[3] = { 30, 30, 30 };
 static int moveCount;
 static int isDie;
 static int canMove = 1;
@@ -87,35 +89,38 @@ void show_game()
 	print_item();
 }
 
-int get_flag_hint()
+void get_flag_hint()
 {
 	int pos = get_flag_relative_position();
 
 	switch (pos)
 	{
-	case 1:
+	case 0:
 		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 오른쪽 위에 있습니다.");
 		break;
-	case 2:
+	case 1:
 		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 왼쪽 위에 있습니다.");
 		break;
-	case 3:
+	case 2:
 		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 왼쪽 아래에 있습니다.");
 		break;
-	case 4:
+	case 3:
 		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 오른쪽 아래에 있습니다.");
 		break;
-	case 5:
+	case 4:
 		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 위쪽에 있습니다.");
 		break;
-	case 6:
+	case 5:
 		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 아래쪽에 있습니다.");
 		break;
-	case 7:
+	case 6:
 		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 왼쪽에 있습니다.");
 		break;
-	case 8:
+	case 7:
 		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 오른쪽에 있습니다.");
+		break;
+	default:
+		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발 위치를 알 수 없습니다.");
 		break;
 	}
 }
@@ -174,7 +179,23 @@ void update_time_stop()
 void check_event(int flagId)
 {
 	int temp, event;
+	if (flagId == 1) // 클리어
+	{
+		show_clear_screen();
+		show_story(level);
 
+		if (level < 2)
+		{
+			level++;
+			set_difficulty();
+			show_game();
+		}
+		else
+		{
+			start_menu();
+		}
+
+	}
 
 	if (flagId > 1)
 	{
@@ -209,7 +230,7 @@ void check_event(int flagId)
 			add_event_message("적 추가 등장");
 			break;
 		case 6://이동 횟수 감소
-			moveCount += 3;
+			moveCount -= 3;
 			add_event_message("이동가능 횟수 3회 감소");
 			break;
 		case 7://시야 감소

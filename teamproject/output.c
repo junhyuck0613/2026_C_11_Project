@@ -6,6 +6,7 @@
 #include "input.h"
 #include <Windows.h>
 #include <conio.h>
+#include "story.h"
 
 extern char map[MAPSIZE][MAPSIZE];
 extern int itemNum[ITEMNUM];
@@ -149,7 +150,7 @@ int show_menu()
 	}
 }
 
-void show_message(char ** str, int count) // 스토리 따로 파일 만들어서 쓴 후에 game.c 나 main.c 에서 실행시키기.
+void show_message(char str[][100], int count)
 {
 	int i;
 
@@ -193,5 +194,52 @@ void print_item()
 	{
 		printf("%s: ", itemName[i]);
 		printf("%d ", itemNum[i]);
+	}
+}
+
+void show_story(int level)
+{
+	system("cls");
+	switch (level)
+	{
+	case 0:
+		show_message(easyStory, easyStoryCount);
+		break;
+	case 1:
+		show_message(normalStory, normalStoryCount);
+		break;
+	case 2:
+		show_message(hardStory, hardStoryCount);
+		break;
+	}
+}
+
+void show_clear_screen()
+{
+	system("cls");
+
+	printf("\n\n");
+
+	printf("          ███████╗████████╗ █████╗  ██████╗ ███████╗\n");
+	printf("          ██╔════╝╚══██╔══╝██╔══██╗██╔════╝ ██╔════╝\n");
+	printf("          ███████╗   ██║   ███████║██║  ███╗█████╗  \n");
+	printf("          ╚════██║   ██║   ██╔══██║██║   ██║██╔══╝  \n");
+	printf("          ███████║   ██║   ██║  ██║╚██████╔╝███████╗\n");
+	printf("          ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝\n");
+
+	printf("\n");
+
+	printf("           ██████╗██╗     ███████╗ █████╗ ██████╗ ██╗\n");
+	printf("          ██╔════╝██║     ██╔════╝██╔══██╗██╔══██╗██║\n");
+	printf("          ██║     ██║     █████╗  ███████║██████╔╝██║\n");
+	printf("          ██║     ██║     ██╔══╝  ██╔══██║██╔══██╗╚═╝\n");
+	printf("          ╚██████╗███████╗███████╗██║  ██║██║  ██║██╗\n");
+	printf("           ╚═════╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝\n");
+
+	printf("\n\n");
+	printf("                    PRESS ENTER TO CONTINUE.");
+
+	while (_getch() != 13)
+	{
 	}
 }
