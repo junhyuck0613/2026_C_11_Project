@@ -17,6 +17,7 @@ char itemName[ITEMNUM][30] = {
 };
 extern int visionRange;
 extern int visionTurn;
+char itemKey[ITEMNUM][10] = {"x", "z", "Passive"};
 
 // 시간 정지, 대시. 보호막, 턴 수 +, 목표지점 힌트, 적 추가, 이동 횟수 감소, 시야 감소, 레이저 빈도 증가, 아이템 사라짐
 

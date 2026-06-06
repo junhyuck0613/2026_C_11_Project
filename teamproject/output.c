@@ -11,6 +11,7 @@
 extern char map[MAPSIZE][MAPSIZE];
 extern int itemNum[ITEMNUM];
 extern char itemName[ITEMNUM][30];
+extern char itemKey[ITEMNUM][10];
 extern int playerLocation[2];
 extern int visionRange;
 
@@ -117,6 +118,7 @@ int show_menu()
 	while (1)
 	{
 		system("cls");
+		printf("\n\n\n");
 		printf("                         MENU\n");
 		for (int i = 0; i < 2; i++)
 		{
@@ -192,7 +194,8 @@ void print_item()
 	printf("\n");
 	for (i = 0; i < ITEMNUM; i++)
 	{
-		printf("%s: ", itemName[i]);
+		printf("%s ", itemName[i]);
+		printf("(%s): ", itemKey[i]);
 		printf("%d ", itemNum[i]);
 	}
 }
@@ -211,6 +214,8 @@ void show_story(int level)
 	case 2:
 		show_message(hardStory, hardStoryCount);
 		break;
+	case 3://시작 스토리
+		show_message(startStory, startStoryCount);
 	}
 }
 

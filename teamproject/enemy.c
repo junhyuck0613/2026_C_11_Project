@@ -201,8 +201,7 @@ int check_enemy_collision(int preX, int preY, int curX, int curY)
             continue;
 
         // 적이 플레이어 칸에 들어옴
-        if (preX == enemies[i].preX && preY == enemies[i].preY &&
-            curX == enemies[i].x && curY == enemies[i].y)
+        if (enemies[i].x == preX && enemies[i].y == preY)
             return 1;
 
         //정면에서 마주침 (위치 교환)

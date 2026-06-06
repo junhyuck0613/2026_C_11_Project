@@ -31,7 +31,6 @@ static int dashReady = 0;
 
 void init_game()
 {
-	SetConsoleOutputCP(CP_UTF8);
 	srand((unsigned int)time(NULL));
 
 	init_map();

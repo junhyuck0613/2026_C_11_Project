@@ -5,7 +5,7 @@
 #define FLAG 'F'
 #define LAND '*'
 #define MAXFLAG 15
-#define ENEMY1 'A'
+#define ENEMY1 'E'
 #define ITEMNUM 3
 #define LASER '#'
 #define LASERCOUNTDOW 3

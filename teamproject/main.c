@@ -8,8 +8,10 @@
 
 int main()
 {
+	SetConsoleOutputCP(CP_UTF8);
 	init_game();
-	//시작 메뉴 나오기 전에 스토리 출력
+
+	show_story(3);
 
 	start_menu();
 
