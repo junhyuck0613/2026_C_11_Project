@@ -11,3 +11,4 @@
 #define LASERCOUNTDOW 3
 #define LASERCHANCE 60
 #define MAXLASER 8
+#define MAXENEMY 10

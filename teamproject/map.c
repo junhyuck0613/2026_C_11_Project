@@ -132,29 +132,42 @@ void init_map()
 
 void place_enemy(int num)
 {
+	if (enemies[num].active == 0)
+		return;
+
 	map[enemies[num].y][enemies[num].x] = ENEMY1;
 }
 
 void delete_enemy(int num)
 {
+	if (enemies[num].active == 0)
+		return;
+
 	map[enemies[num].y][enemies[num].x] = LAND;
 }
 
-void place_all_enemy(int level)
+void place_all_enemy()
 {
 	int i;
-	for (i = 0; i < enemyPerLevel[level]; i++)
+
+	for (i = 0; i < MAXENEMY; i++)
 	{
+		if (enemies[i].active == 0)
+			continue;
+
 		place_enemy(i);
 	}
 }
 
-void enemy_movement(int level, int canMove)
+void enemy_movement(int canMove)
 {
 	int i;
-	
-	for (i = 0; i < enemyPerLevel[level]; i++)
+
+	for (i = 0; i < MAXENEMY; i++)
 	{
+		if (enemies[i].active == 0)
+			continue;
+
 		delete_enemy(i);
 		move_enemy(i, canMove);
 		place_enemy(i);
@@ -219,3 +232,37 @@ void place_flags()
 		map[flags[i].y][flags[i].x] = FLAG;
 	}
 }
+
+int get_flag_relative_position()
+{
+	int x, y;
+
+	x = flags[0].x - playerLocation[0];
+	y = flags[0].y - playerLocation[1];
+
+	if (y < 0)
+	{
+		if (x > 0)
+			return 0; // 오른쪽 위
+		if (x < 0)
+			return 1; // 왼쪽 위
+		return 4; // 위
+	}
+
+	if (y > 0)
+	{
+		if (x < 0)
+			return 2; // 왼쪽 아래
+		if (x > 0)
+			return 3; // 오른쪽 아래
+		return 5; // 아래
+	}
+
+	if (x < 0)
+		return 6; // 왼쪽
+
+	if (x > 0)
+		return 7; // 오른쪽
+
+		return -1; // 같은 위치
+	}

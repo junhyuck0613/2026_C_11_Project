@@ -21,6 +21,7 @@ static int moveCount;
 static int isDie;
 static int canMove = 1;
 static int laserNum = 0;
+char eventMessage[200] = "";
 
 void init_game()
 {
@@ -62,7 +63,7 @@ void set_difficulty()
 	generate_flags(level);
 	moveCount = moveNum[level];
 	generate_enemy(level);
-	place_all_enemy(level);
+	place_all_enemy();
 }
 
 void show_game()
@@ -71,25 +72,115 @@ void show_game()
 
 	init_map();
 	place_flags();
-	place_all_enemy(level);
+	place_all_enemy();
 	place_laser();
 	locate_player();
 
 	render_map();
 
+	printf("\n%s", eventMessage);
 	print_moveCount(&moveCount);
 	print_item();
 }
 
+int get_flag_hint()
+{
+	int pos = get_flag_relative_position();
+
+	switch (pos)
+	{
+	case 1:
+		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 오른쪽 위에 있습니다.");
+		break;
+	case 2:
+		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 왼쪽 위에 있습니다.");
+		break;
+	case 3:
+		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 왼쪽 아래에 있습니다.");
+		break;
+	case 4:
+		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 오른쪽 아래에 있습니다.");
+		break;
+	case 5:
+		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 위쪽에 있습니다.");
+		break;
+	case 6:
+		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 아래쪽에 있습니다.");
+		break;
+	case 7:
+		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 왼쪽에 있습니다.");
+		break;
+	case 8:
+		strcpy_s(eventMessage, sizeof(eventMessage), "힌트: 깃발은 오른쪽에 있습니다.");
+		break;
+	}
+}
+
 void check_event(int tileInfo)
 {
+	int temp;
 	if (tileInfo == -1) // 보호막 추가해서 그 변수가 있으면 1 줄이고 break 하기
-		isDie = 1;
+	{
+		isDie = 1; 
+		return;
+	}
 
 	//tileInfo id의 깃발의 효과 적용
-	 
-	if (tileInfo > 0)
+	if (tileInfo > 1)
 	{
+		switch (flags[tileInfo].effect)
+		{
+		case 0: //시간 정지 아이템 획득
+			itemNum[0]++;
+			strcpy_s(eventMessage, sizeof(eventMessage), "시간 정지 획득");
+			break;
+		case 1: 
+			itemNum[1]++; // 대시 아이템 획득
+			strcpy_s(eventMessage, sizeof(eventMessage), "대시 획득");
+			break;
+		case 2: // 보호막 획득
+			itemNum[2]++;
+			strcpy_s(eventMessage, sizeof(eventMessage), "보호막 획득");
+			break;
+		case 3: //턴 수 +
+			moveCount += 5;
+			strcpy_s(eventMessage, sizeof(eventMessage), "이동가능 횟수 5회 증가");
+			break;
+		case 4: //목표지점 힌트
+			get_flag_hint();
+			break;
+		case 5://적 추가
+			generate_one_enemy(find_empty_enemy_slot);
+			strcpy_s(eventMessage, sizeof(eventMessage), "적 추가 등장");
+			break;
+		case 6://이동 횟수 감소
+			moveCount += 3;
+			strcpy_s(eventMessage, sizeof(eventMessage), "이동가능 횟수 3회 감소");
+			break;
+		case 7://시야 감소
+			break;
+		case 8://레이저 추가
+			generate_laser(&laserNum, 1);
+			strcpy_s(eventMessage, sizeof(eventMessage), "레이저 추가 등장");
+			break;
+		case 9://아이템 사라짐
+			temp = rand() & 3;
+			itemNum[temp]--;
+			switch (temp)
+			{
+			case 0:
+				strcpy_s(eventMessage, sizeof(eventMessage), "시간 정지 파손");
+				break;
+			case 1:
+				strcpy_s(eventMessage, sizeof(eventMessage), "대시 파손");
+				break;
+			case 2:
+				strcpy_s(eventMessage, sizeof(eventMessage), "보호막 파손");
+				break;
+			}
+			break;
+		}
+
 		flags[tileInfo - 1].effect = 0;
 		flags[tileInfo - 1].id = 0;
 		flags[tileInfo - 1].x = 0;
@@ -97,21 +188,24 @@ void check_event(int tileInfo)
 	}
 }
 
-void spawn_laser(int* laserNum)
+void spawn_laser(int* laserNum, int canLaunch)
 {
-	if (*laserNum >= maxLaserPerLevel[level])
+	if (!canLaunch || (*laserNum) >= maxLaserPerLevel[level])
 		return;
 
 	int randNum = rand() % 100;
 
 	if (randNum < LASERCHANCE)
 	{
-		generate_laser(laserNum);
+		generate_laser(laserNum, 0);
 	}
 }
 
-void process_laser(int* laserNum)
+void process_laser(int* laserNum, int canLaunch)
 {
+	if (!canLaunch)
+		return;
+
 	int i;
 
 	for (i = 0; i < MAXLASER; i++)
@@ -174,11 +268,11 @@ void game_loop()
 		}
 
 		place_laser();
-		enemy_movement(level, canMove);
+		enemy_movement(canMove);
 		tileInfo = player_movement(input, & moveCount);
 
-		process_laser(&laserNum);
-		spawn_laser(&laserNum);
+		process_laser(&laserNum, canMove);
+		spawn_laser(&laserNum, canMove);
 
 		// tileInfo가 -1이거나 적과의 충돌이 있으면 게임오버
 		if (tileInfo == -1 || check_enemy_collision(prevX, prevY, playerLocation[0], playerLocation[1]))
@@ -191,18 +285,7 @@ void game_loop()
 		}
 
 		show_game();
-		printf("\n %d \n", laserNum);
-		for (int i = 0; i < MAXLASER; i++) // 레이저 디버그 용	
-		{
-			printf(
-				"[%d] active=%d, line=%d, isVertical=%d, countdown=%d\n",
-				i,
-				lasers[i].active,
-				lasers[i].line,
-				lasers[i].isVertical,
-				lasers[i].countdown
-			);
-		}
+
 		if (isDie != 0 || moveCount == 0)
 		{
 			Sleep(500);

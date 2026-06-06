@@ -139,7 +139,7 @@ int show_menu()
 	}
 }
 
-void show_story(char ** str, int count) // 스토리 따로 파일 만들어서 쓴 후에 game.c 나 main.c 에서 실행시키기.
+void show_message(char ** str, int count) // 스토리 따로 파일 만들어서 쓴 후에 game.c 나 main.c 에서 실행시키기.
 {
 	int i;
 

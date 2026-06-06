@@ -1,4 +1,5 @@
 struct enemy {
+	int active;
 	int x, y;
 	int preX, preY;
 	int dir; // 0 상, 1 하, 2 좌, 3 우
@@ -11,10 +12,10 @@ struct laser {
 	char countdown;
 };
 
-extern struct enemy enemies[10];
+extern struct enemy enemies[MAXENEMY];
 extern int enemyPerLevel[3];
 extern int maxLaserPerLevel[3];
-extern struct laser lasers[8];
+extern struct laser lasers[MAXLASER];
 
 /*void ActivateStopEnemyItem();
 void UpdateEnemyStopItem();
@@ -23,5 +24,8 @@ int CheckEnemyCollision();*/
 void generate_enemy(int level);
 void move_enemy(int num, int canMove);
 int check_enemy_collision(int prevX, int prevY, int curX, int curY);
-void generate_laser(int* laserNum);
+void generate_laser(int* laserNum, int isEvent);
 void init_laser(int num, int* laserNum);
+void init_enemy();
+void generate_one_enemy(int index);
+int find_empty_enemy_slot();

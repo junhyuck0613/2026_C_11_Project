@@ -5,11 +5,11 @@
 #include "constant.h"
 #include "enemy.h"
 
-struct enemy enemies[10] = { 0 };
+struct enemy enemies[MAXENEMY] = { 0 };
 int enemyPerLevel[3] = { 0 , 3, 6 };
 extern int playerLocation[2];
 extern char map[MAPSIZE][MAPSIZE];
-struct laser lasers[8] = { 0 };
+struct laser lasers[MAXLASER] = { 0 };
 int maxLaserPerLevel[3] = { 0, 0, 3 };
 
 /*  
@@ -78,40 +78,64 @@ int CheckEnemyCollision(int playerX, int playerY, int enemyX, int enemyY)
 
 void generate_enemy(int level)
 {
-    int i, x, y, dir;
+    int i;
 
-    for (i = 0; i < 10; i++)
+    init_enemy();
+
+    for (i = 0; i < enemyPerLevel[level]; i++)
     {
+        generate_one_enemy(i);
+    }
+}
+
+void init_enemy()
+{
+    int i;
+    for (i = 0; i < MAXENEMY; i++)
+    {
+        enemies[i].active = 0;
         enemies[i].x = 0;
         enemies[i].y = 0;
         enemies[i].preX = 0;
         enemies[i].preY = 0;
         enemies[i].dir = 0;
     }
+}
 
-    for (i = 0; i < enemyPerLevel[level]; i++)
+void generate_one_enemy(int index)
+{
+    int x, y, dir;
+
+    if (index < 0 || index >= MAXENEMY)
+        return;
+
+    while (1)
     {
         x = rand() % MAPSIZE;
         y = rand() % MAPSIZE;
-        dir = rand() % 4;
 
-        if ((playerLocation[0] == x) && (playerLocation[1] == y))
-        {
-            i--;
+        if (playerLocation[0] == x && playerLocation[1] == y)
             continue;
-        }
 
-        enemies[i].x = x;
-        enemies[i].y = y;
-        enemies[i].preX = x;
-        enemies[i].preY = y;
-        enemies[i].dir= dir;
+        if (map[y][x] != LAND)
+            continue;
+
+        break;
     }
+
+    dir = rand() % 4;
+
+    enemies[index].x = x;
+    enemies[index].y = y;
+    enemies[index].preX = x;
+    enemies[index].preY = y;
+    enemies[index].dir = dir;
+    enemies[index].active = 1;
 }
 
 void move_enemy(int num, int canMove)
 {
-    if (!canMove)
+    if (!canMove || !enemies[num].active)
         return;
 
     enemies[num].preX = enemies[num].x;
@@ -171,9 +195,9 @@ void move_enemy(int num, int canMove)
 
 int check_enemy_collision(int preX, int preY, int curX, int curY)
 {
-    for (int i = 0; i < 10; i++) {
-        if (enemies[i].x == 0 && enemies[i].y == 0 &&
-            enemies[i].preX == 0 && enemies[i].preY == 0)
+    for (int i = 0; i < MAXENEMY; i++)
+    {
+        if (!enemies[i].active)
             continue;
 
         // 적이 플레이어 칸에 들어옴
@@ -186,10 +210,11 @@ int check_enemy_collision(int preX, int preY, int curX, int curY)
             curX == enemies[i].preX && curY == enemies[i].preY)
             return 1;
     }
+
     return 0;
 }
 
-void generate_laser(int* laserNum)
+void generate_laser(int* laserNum, int isEvent)
 {
     int i;
 
@@ -235,4 +260,15 @@ void init_laser(int num, int* laserNum)
     lasers[num].active = 0;
 
     (*laserNum)--;
+}
+
+int find_empty_enemy_slot()
+{
+    for (int i = 0; i < MAXENEMY; i++)
+    {
+        if (enemies[i].active == 0)
+            return i;
+    }
+
+    return -1;
 }
