@@ -160,3 +160,62 @@ void enemy_movement(int level, int canMove)
 		place_enemy(i);
 	}
 }
+
+void place_laser()
+{
+	int i, j;
+
+	for (i = 0; i < MAXLASER; i++)
+	{
+		if (lasers[i].active == 0)
+			continue;
+
+		if (lasers[i].isVertical == 0)
+		{
+			for (j = 0; j < MAPSIZE; j++)
+			{
+				if (lasers[i].countdown != LASER &&
+					map[lasers[i].line][j] == FLAG)
+					continue;
+
+				if (lasers[i].countdown == LASER)
+				{
+					map[lasers[i].line][j] = LASER;
+				}
+				else
+				{
+					map[lasers[i].line][j] = '0' + lasers[i].countdown;
+				}
+			}
+		}
+		else
+		{
+			for (j = 0; j < MAPSIZE; j++)
+			{
+				if (lasers[i].countdown != LASER &&
+					map[j][lasers[i].line] == FLAG)
+					continue;
+
+				if (lasers[i].countdown == LASER)
+				{
+					map[j][lasers[i].line] = LASER;
+				}
+				else
+				{
+					map[j][lasers[i].line] = '0' + lasers[i].countdown;
+				}
+			}
+		}
+	}
+}
+
+void place_flags()
+{
+	for (int i = 0; i < MAXFLAG; i++)
+	{
+		if (flags[i].id == 0)
+			continue;
+
+		map[flags[i].y][flags[i].x] = FLAG;
+	}
+}

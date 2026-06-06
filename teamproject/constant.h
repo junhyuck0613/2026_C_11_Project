@@ -6,6 +6,8 @@
 #define LAND '*'
 #define MAXFLAG 15
 #define ENEMY1 'A'
-#define ENEMY2 'B'
 #define ITEMNUM 3
 #define LASER '#'
+#define LASERCOUNTDOW 3
+#define LASERCHANCE 60
+#define MAXLASER 8

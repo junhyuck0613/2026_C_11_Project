@@ -19,6 +19,7 @@ void render_map()
 	for (y = 0; y < MAPSIZE; y++)
 	{
 		int pos = 0;
+
 		for (x = 0; x < MAPSIZE; x++)
 		{
 			line[pos++] = ' ';
@@ -168,7 +169,7 @@ void show_game_over()
 	}
 }
 
-void print_moveCount(int * moveCount)
+void print_moveCount(int* moveCount)
 {
 	printf("\n\n");
 	printf("Moves Left: %d", *moveCount);

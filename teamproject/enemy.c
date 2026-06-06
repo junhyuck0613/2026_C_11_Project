@@ -9,26 +9,8 @@ struct enemy enemies[10] = { 0 };
 int enemyPerLevel[3] = { 0 , 3, 6 };
 extern int playerLocation[2];
 extern char map[MAPSIZE][MAPSIZE];
-
-int check_enemy_collision(int preX, int preY, int curX, int curY)
-{
-    for (int i = 0; i < 10; i++) {
-        if (enemies[i].x == 0 && enemies[i].y == 0 && 
-            enemies[i].preX == 0 && enemies[i].preY == 0)
-            continue;
-
-        // 적이 플레이어 칸에 들어옴
-        if (preX == enemies[i].preX && preY == enemies[i].preY &&
-            curX == enemies[i].x && curY == enemies[i].y)
-            return 1;
-
-        //정면에서 마주침 (위치 교환)
-        if (preX == enemies[i].x && preY == enemies[i].y &&
-            curX == enemies[i].preX && curY == enemies[i].preY)
-            return 1;
-    }
-    return 0;
-}
+struct laser lasers[8] = { 0 };
+int maxLaserPerLevel[3] = { 0, 0, 3 };
 
 /*  
 //적 정지 아이템 깃발을 밟았을 때 실행
@@ -187,3 +169,70 @@ void move_enemy(int num, int canMove)
     }
 }
 
+int check_enemy_collision(int preX, int preY, int curX, int curY)
+{
+    for (int i = 0; i < 10; i++) {
+        if (enemies[i].x == 0 && enemies[i].y == 0 &&
+            enemies[i].preX == 0 && enemies[i].preY == 0)
+            continue;
+
+        // 적이 플레이어 칸에 들어옴
+        if (preX == enemies[i].preX && preY == enemies[i].preY &&
+            curX == enemies[i].x && curY == enemies[i].y)
+            return 1;
+
+        //정면에서 마주침 (위치 교환)
+        if (preX == enemies[i].x && preY == enemies[i].y &&
+            curX == enemies[i].preX && curY == enemies[i].preY)
+            return 1;
+    }
+    return 0;
+}
+
+void generate_laser(int* laserNum)
+{
+    int i;
+
+    for (i = 0; i < MAXLASER; i++)
+    {
+        if (!lasers[i].active)
+        {
+            lasers[i].line = rand() % MAPSIZE;
+            lasers[i].isVertical = rand() % 2;
+            lasers[i].countdown = 3;
+            lasers[i].active = 1;
+
+            (*laserNum)++;
+            return;
+        }
+    }
+}
+
+void init_laser(int num, int* laserNum)
+{
+    int i;
+
+    if (lasers[num].isVertical == 0)
+    {
+        for (i = 0; i < MAPSIZE; i++)
+        {
+            if (map[lasers[num].line][i] == LASER)
+                map[lasers[num].line][i] = LAND;
+        }
+    }
+    else
+    {
+        for (i = 0; i < MAPSIZE; i++)
+        {
+            if (map[i][lasers[num].line] == LASER)
+                map[i][lasers[num].line] = LAND;
+        }
+    }
+
+    lasers[num].line = 0;
+    lasers[num].isVertical = 0;
+    lasers[num].countdown = 0;
+    lasers[num].active = 0;
+
+    (*laserNum)--;
+}

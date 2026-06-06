@@ -18,7 +18,7 @@ char itemName[ITEMNUM][30] = {
 
 // 시간 정지, 대시. 보호막, 턴 수 +, 목표지점 힌트, 적 추가, 이동 횟수 감소, 시야 감소, 레이저 빈도 증가, 아이템 사라짐
 
-void place_flags(int level)
+void generate_flags(int level)
 {
 	int i;
 
@@ -34,17 +34,27 @@ void place_flags(int level)
 	{
 		int x = rand() % MAPSIZE;
 		int y = rand() % MAPSIZE;
-		if (map[y][x] == LAND)
-			map[y][x] = FLAG;
-		else
+
+		int isOverlap = 0;
+		for (int j = 0; j < i; j++)
+		{
+			if (flags[j].x == x && flags[j].y == y)
+			{
+				isOverlap = 1;
+				break;
+			}
+		}
+
+		if (isOverlap)
 		{
 			i--;
 			continue;
 		}
+
 		flags[i].x = x;
 		flags[i].y = y;
 		flags[i].effect = rand() % 10;
-		flags[i].id = i+1;
+		flags[i].id = i + 1;
 	}
 }
 
@@ -67,11 +77,13 @@ int get_tile_info(int player[])
 {
 	switch (map[player[1]][player[0]])
 	{
-	case LAND:
-		return 0;
 	case FLAG:
 		return find_flag(player[0], player[1]);
-	default: //적이나 레이저
+	case ENEMY1:
 		return -1;
+	case LASER:
+		return -1;
+	default:
+		return 0;
 	}
 }

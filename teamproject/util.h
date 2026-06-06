@@ -12,6 +12,6 @@ extern struct flag flags[MAXFLAG];
 extern int itemNum[ITEMNUM];
 extern char itemName[ITEMNUM][30];
 
-void place_flags(int level);
+void generate_flags(int level);
 int find_flag(int x, int y);
 int get_tile_info(int player[]);

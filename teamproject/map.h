@@ -11,3 +11,5 @@ void place_enemy(int num);
 void delete_enemy(int num);
 void place_all_enemy(int level);
 void enemy_movement(int level, int canMove);
+void place_laser();
+void place_flags();
