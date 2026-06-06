@@ -25,6 +25,7 @@ static int laserNum = 0;
 char eventMessage[200] = "";
 int visionRange = MAPSIZE;
 int visionTurn = 0;
+static int dashReady = 0;
 
 void init_game()
 {
@@ -226,7 +227,7 @@ void check_event(int flagId)
 			break;
 		case 9://아이템 사라짐
 			temp = rand() & 3;
-			if(itemNum > 0)
+			if(itemNum[temp] > 0)
 				itemNum[temp]--;
 			switch (temp)
 			{
@@ -305,42 +306,75 @@ void process_laser(int* laserNum, int canLaunch, int * isDanger)
 	}
 }
 
+int is_move_key(int input)
+{
+	if (input == 72 || input == 75 || input == 80 || input == 77)
+		return 1;
+
+	return 0;
+}
+
 void game_loop()
 {
-	int tileInfo, isMove, isDanger = 0;
+	int tileInfo, isMove, isDanger;
+
 	while (1)
 	{
+		tileInfo = 0;
+		isMove = 0;
 		isDanger = 0;
+
+		int moveDistance = 1;
+		int usingDash = 0;
+
 		int input = get_input();
 		int prevX = playerLocation[0];
 		int prevY = playerLocation[1];
+
 		system("cls");
+
 		if (input == 27)
 		{
 			int temp = show_menu();
+
 			if (temp == 0)
 			{
 				start_menu();
 				continue;
 			}
+
 			if (temp == 1)
 			{
 				exit(0);
 			}
-
 		}
 
 		eventMessage[0] = '\0';
 
+		use_item(input, &canMove, &timeStopTurn, &dashReady);
+
+		if (is_move_key(input) && dashReady)
+		{
+			moveDistance = 3;
+			usingDash = 1;
+		}
+
 		place_laser();
 		enemy_movement(canMove);
-		isMove = player_movement(input, & moveCount, &tileInfo);
+		isMove = player_movement(input, &moveCount, &tileInfo, moveDistance);
+
+		if (usingDash && isMove)
+		{
+			dashReady = 0;
+			add_event_message("대시 발동됨");
+		}
 
 		if (isMove)
 		{
 			update_vision_effect();
 			update_time_stop();
 		}
+
 		process_laser(&laserNum, canMove, &isDanger);
 		spawn_laser(&laserNum, canMove);
 

@@ -18,63 +18,75 @@ void reset_player_location()
 	playerLocation[1] = 9;
 }
 
-int player_movement(int dir, int * moveCount, int * tileInfo)
+int player_movement(int dir, int* moveCount, int* tileInfo, int moveDistance)
 {
-	switch (dir)
+	int i;
+	int moved = 0;
+
+	*tileInfo = 0;
+
+	delete_player();
+
+	for (i = 0; i < moveDistance; i++)
 	{
-	case 72: // 상
-		if (playerLocation[1] == 0)
-			return 0;
-		else
+		switch (dir)
 		{
-			delete_player();
-			playerLocation[1] -= 1;
-			(*tileInfo) = get_tile_info(playerLocation);
-			locate_player();
-			(*moveCount)--;
-			return 1;
-		}
+		case 72: // 상
+			if (playerLocation[1] == 0)
+				i = moveDistance;
+			else
+			{
+				playerLocation[1]--;
+				moved = 1;
+			}
+			break;
 
-	case 75: // 좌
-		if (playerLocation[0] == 0)
-			return 0;
-		else
-		{
-			delete_player();
-			playerLocation[0] -= 1;
-			(*tileInfo) = get_tile_info(playerLocation);
-			locate_player();
-			(*moveCount)--;
-			return 1;
-		}
+		case 75: // 좌
+			if (playerLocation[0] == 0)
+				i = moveDistance;
+			else
+			{
+				playerLocation[0]--;
+				moved = 1;
+			}
+			break;
 
-	case 80: // 하
-		if (playerLocation[1] == MAPSIZE - 1)
-			return 0;
-		else
-		{
-			delete_player();
-			playerLocation[1] += 1;
-			(*tileInfo) = get_tile_info(playerLocation);
-			locate_player();
-			(*moveCount)--;
-			return 1;
-		}
+		case 80: // 하
+			if (playerLocation[1] == MAPSIZE - 1)
+				i = moveDistance;
+			else
+			{
+				playerLocation[1]++;
+				moved = 1;
+			}
+			break;
 
-	case 77: // 우
-		if (playerLocation[0] == MAPSIZE - 1)
-			return 0;
-		else
-		{
-			delete_player();
-			playerLocation[0] += 1;
-			(*tileInfo) = get_tile_info(playerLocation);
+		case 77: // 우
+			if (playerLocation[0] == MAPSIZE - 1)
+				i = moveDistance;
+			else
+			{
+				playerLocation[0]++;
+				moved = 1;
+			}
+			break;
+
+		default:
 			locate_player();
-			(*moveCount)--;
-			return 1;
+			return 0;
 		}
 	}
-	return 0;
+
+	if (moved)
+	{
+		// 도착 칸만 검사
+		*tileInfo = get_tile_info(playerLocation);
+		(*moveCount)--;
+	}
+
+	locate_player();
+
+	return moved;
 }
 
 /*

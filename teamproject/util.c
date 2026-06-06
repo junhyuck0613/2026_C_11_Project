@@ -96,7 +96,7 @@ void activate_reduce_vision(int turn)
 	visionTurn = turn;
 }
 
-void use_item(int input, int * canMove, int * timeStopTurn)
+void use_item(int input, int* canMove, int* timeStopTurn, int* dashReady)
 {
 	switch (input)
 	{
@@ -113,6 +113,18 @@ void use_item(int input, int * canMove, int * timeStopTurn)
 		break;
 
 	case 'x': // 대시
+		if (*dashReady)
+		{
+			add_event_message("이미 대시가 준비되어 있습니다.");
+			break;
+		}
+
+		if (itemNum[1] > 0)
+		{
+			itemNum[1]--;
+			(*dashReady) = 1;
+			add_event_message("대시 준비 완료. 다음 이동은 3칸 이동합니다.");
+		}
 		break;
 	}
 }
