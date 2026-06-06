@@ -1,7 +1,7 @@
 #include "constant.h"
 
 void reset_player_location();
-int player_movement(int dir, int* moveCount);
+int player_movement(int dir, int* moveCount, int* tileInfo);
 int check_enemies_collision(int prevX, int prevY, int currX, int currY);
 //int can_move(char dir, int playerLocation[]);
 void locate_player();

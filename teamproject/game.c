@@ -22,6 +22,8 @@ static int isDie;
 static int canMove = 1;
 static int laserNum = 0;
 char eventMessage[200] = "";
+int visionRange = MAPSIZE;
+int visionTurn = 0;
 
 void init_game()
 {
@@ -116,9 +118,25 @@ int get_flag_hint()
 	}
 }
 
+void update_vision_effect()
+{
+	if (visionTurn > 0)
+	{
+		visionTurn--;
+
+		if (visionTurn == 0)
+		{
+			visionRange = MAPSIZE;
+		}
+	}
+}
+
 void check_event(int tileInfo)
 {
 	int temp;
+
+	eventMessage[0] = '\0';
+	
 	if (tileInfo == -1) // 보호막 추가해서 그 변수가 있으면 1 줄이고 break 하기
 	{
 		isDie = 1; 
@@ -150,6 +168,11 @@ void check_event(int tileInfo)
 			get_flag_hint();
 			break;
 		case 5://적 추가
+			if (level < 1)
+			{
+				printf("적 추가...... 무시됨");
+				break;
+			}
 			generate_one_enemy(find_empty_enemy_slot);
 			strcpy_s(eventMessage, sizeof(eventMessage), "적 추가 등장");
 			break;
@@ -158,14 +181,22 @@ void check_event(int tileInfo)
 			strcpy_s(eventMessage, sizeof(eventMessage), "이동가능 횟수 3회 감소");
 			break;
 		case 7://시야 감소
+			activate_reduce_vision(3);
+			strcpy_s(eventMessage, sizeof(eventMessage), "3회 이동 간 시야 감소..");
 			break;
 		case 8://레이저 추가
+			if (level < 2)
+			{
+				printf("레이저 추가...... 무시됨");
+				break;
+			}
 			generate_laser(&laserNum, 1);
 			strcpy_s(eventMessage, sizeof(eventMessage), "레이저 추가 등장");
 			break;
 		case 9://아이템 사라짐
 			temp = rand() & 3;
-			itemNum[temp]--;
+			if(itemNum > 0)
+				itemNum[temp]--;
 			switch (temp)
 			{
 			case 0:
@@ -245,7 +276,7 @@ void process_laser(int* laserNum, int canLaunch)
 
 void game_loop()
 {
-	int tileInfo;
+	int tileInfo, isMove;
 	while (1)
 	{
 		int input = get_input();
@@ -269,8 +300,10 @@ void game_loop()
 
 		place_laser();
 		enemy_movement(canMove);
-		tileInfo = player_movement(input, & moveCount);
+		isMove = player_movement(input, & moveCount, &tileInfo);
 
+		if (isMove)
+			update_vision_effect();
 		process_laser(&laserNum, canMove);
 		spawn_laser(&laserNum, canMove);
 

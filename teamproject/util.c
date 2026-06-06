@@ -15,6 +15,8 @@ char itemName[ITEMNUM][30] = {
 	"Dash",
 	"Shield"
 };
+extern int visionRange;
+extern int visionTurn;
 
 // 시간 정지, 대시. 보호막, 턴 수 +, 목표지점 힌트, 적 추가, 이동 횟수 감소, 시야 감소, 레이저 빈도 증가, 아이템 사라짐
 
@@ -86,4 +88,10 @@ int get_tile_info(int player[])
 	default:
 		return 0;
 	}
+}
+
+void activate_reduce_vision(int turn)
+{
+	visionRange = 3;
+	visionTurn = turn;
 }

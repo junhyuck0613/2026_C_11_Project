@@ -10,6 +10,7 @@
 
 char map[MAPSIZE][MAPSIZE] = { 0 };
 int playerLocation[2] = { 4 , 9}; // x, y
+extern int visionRange;
 
 void reset_player_location()
 {
@@ -17,9 +18,8 @@ void reset_player_location()
 	playerLocation[1] = 9;
 }
 
-int player_movement(int dir, int * moveCount)
+int player_movement(int dir, int * moveCount, int * tileInfo)
 {
-	int temp;
 	switch (dir)
 	{
 	case 72: // 상
@@ -29,10 +29,10 @@ int player_movement(int dir, int * moveCount)
 		{
 			delete_player();
 			playerLocation[1] -= 1;
-			temp = get_tile_info(playerLocation);
+			(*tileInfo) = get_tile_info(playerLocation);
 			locate_player();
 			(*moveCount)--;
-			return temp;
+			return 1;
 		}
 
 	case 75: // 좌
@@ -42,10 +42,10 @@ int player_movement(int dir, int * moveCount)
 		{
 			delete_player();
 			playerLocation[0] -= 1;
-			temp = get_tile_info(playerLocation);
+			(*tileInfo) = get_tile_info(playerLocation);
 			locate_player();
 			(*moveCount)--;
-			return temp;
+			return 1;
 		}
 
 	case 80: // 하
@@ -55,10 +55,10 @@ int player_movement(int dir, int * moveCount)
 		{
 			delete_player();
 			playerLocation[1] += 1;
-			temp = get_tile_info(playerLocation);
+			(*tileInfo) = get_tile_info(playerLocation);
 			locate_player();
 			(*moveCount)--;
-			return temp;
+			return 1;
 		}
 
 	case 77: // 우
@@ -68,12 +68,13 @@ int player_movement(int dir, int * moveCount)
 		{
 			delete_player();
 			playerLocation[0] += 1;
-			temp = get_tile_info(playerLocation);
+			(*tileInfo) = get_tile_info(playerLocation);
 			locate_player();
 			(*moveCount)--;
-			return temp;
+			return 1;
 		}
 	}
+	return 0;
 }
 
 /*

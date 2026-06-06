@@ -10,6 +10,8 @@
 extern char map[MAPSIZE][MAPSIZE];
 extern int itemNum[ITEMNUM];
 extern char itemName[ITEMNUM][30];
+extern int playerLocation[2];
+extern int visionRange;
 
 void render_map()
 {
@@ -22,8 +24,16 @@ void render_map()
 
 		for (x = 0; x < MAPSIZE; x++)
 		{
+			int xDistance = abs(x - playerLocation[0]);
+			int yDistance = abs(y - playerLocation[1]);
+
 			line[pos++] = ' ';
-			line[pos++] = map[y][x];
+
+			if (xDistance <= visionRange && yDistance <= visionRange)
+				line[pos++] = map[y][x];
+			else
+				line[pos++] = ' ';
+
 			line[pos++] = ' ';
 		}
 
