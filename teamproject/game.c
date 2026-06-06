@@ -68,8 +68,15 @@ void set_difficulty()
 void show_game()
 {
 	system("cls");
-	render_map();
+
+	init_map();
 	place_flags();
+	place_all_enemy(level);
+	place_laser();
+	locate_player();
+
+	render_map();
+
 	print_moveCount(&moveCount);
 	print_item();
 }
@@ -80,7 +87,7 @@ void check_event(int tileInfo)
 		isDie = 1;
 
 	//tileInfo id의 깃발의 효과 적용
-
+	 
 	if (tileInfo > 0)
 	{
 		flags[tileInfo - 1].effect = 0;
@@ -107,7 +114,7 @@ void process_laser(int* laserNum)
 {
 	int i;
 
-	for (i = 0; i < 8; i++)
+	for (i = 0; i < MAXLASER; i++)
 	{
 		if (!lasers[i].active)
 			continue;
@@ -123,6 +130,21 @@ void process_laser(int* laserNum)
 		if (lasers[i].countdown == 0)
 		{
 			lasers[i].countdown = LASER;
+
+			if (lasers[i].isVertical == 0)
+			{
+				if (playerLocation[1] == lasers[i].line)
+				{
+					isDie = 1;
+				}
+			}
+			else
+			{
+				if (playerLocation[0] == lasers[i].line)
+				{
+					isDie = 1;
+				}
+			}
 		}
 	}
 }
@@ -170,7 +192,7 @@ void game_loop()
 
 		show_game();
 		printf("\n %d \n", laserNum);
-		for (int i = 0; i < MAXLASER; i++)
+		for (int i = 0; i < MAXLASER; i++) // 레이저 디버그 용	
 		{
 			printf(
 				"[%d] active=%d, line=%d, isVertical=%d, countdown=%d\n",
