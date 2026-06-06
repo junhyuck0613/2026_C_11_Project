@@ -20,6 +20,7 @@ const int moveNum[3] = { 10, 20, 30 };
 static int moveCount;
 static int isDie;
 static int canMove = 1;
+static int timeStopTurn = 0;
 static int laserNum = 0;
 char eventMessage[200] = "";
 int visionRange = MAPSIZE;
@@ -144,6 +145,28 @@ void add_event_message(const char* message)
 	{
 		strcat_s(eventMessage, sizeof(eventMessage), "\n");
 		strcat_s(eventMessage, sizeof(eventMessage), message);
+	}
+}
+
+void update_time_stop()
+{
+	char temp[100];
+
+	if (timeStopTurn > 0)
+	{
+		timeStopTurn--;
+
+		if (timeStopTurn > 0)
+		{
+			sprintf_s(temp, sizeof(temp),
+				"시간 정지가 %d번 남았습니다.", timeStopTurn);
+			add_event_message(temp);
+		}
+		else
+		{
+			canMove = 1;
+			add_event_message("시간 정지가 끝났습니다.");
+		}
 	}
 }
 
@@ -314,7 +337,10 @@ void game_loop()
 		isMove = player_movement(input, & moveCount, &tileInfo);
 
 		if (isMove)
+		{
 			update_vision_effect();
+			update_time_stop();
+		}
 		process_laser(&laserNum, canMove, &isDanger);
 		spawn_laser(&laserNum, canMove);
 

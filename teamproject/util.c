@@ -96,12 +96,22 @@ void activate_reduce_vision(int turn)
 	visionTurn = turn;
 }
 
-void use_item(int input)
+void use_item(int input, int * canMove, int * timeStopTurn)
 {
 	switch (input)
 	{
-	case 'z': //시간 정지
+	case 'z': // 시간 정지
+		if (itemNum[0] > 0)
+		{
+			itemNum[0]--;
+
+			(*timeStopTurn) = 3;
+			(*canMove) = 0;
+
+			add_event_message("시간 정지 사용됨");
+		}
 		break;
+
 	case 'x': // 대시
 		break;
 	}

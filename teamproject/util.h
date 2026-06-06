@@ -15,3 +15,4 @@ extern char itemName[ITEMNUM][30];
 void generate_flags(int level);
 int find_flag(int x, int y);
 int get_tile_info(int player[]);
+void use_item(int input, int* canMove, int* timeStopTurn);
