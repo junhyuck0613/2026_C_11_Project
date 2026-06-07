@@ -175,7 +175,7 @@ void show_game_over()
 	printf("                    ╚═╝     ╚═╝  ╚═╝╚═╝╚══════╝\n");
 	printf("                             FAIL..\n");
 
-	printf("\n\nPRESS ENTER TO CONTINUE.");
+	printf("\n\n                    PRESS ENTER TO CONTINUE.");
 
 	while (_getch() != 13)
 	{
