@@ -18,7 +18,7 @@
 extern char map[MAPSIZE][MAPSIZE];
 extern int playerLocation[2];
 static int level;
-const int moveNum[3] = { 30, 30, 30 };
+const int moveNum[3] = { 30, 20, 20 };
 static int moveCount;
 static int isDie;
 static int canMove = 1;
@@ -423,7 +423,7 @@ void game_loop()
 
 		show_game();
 
-		if (isDie != 0 || moveCount == 0)
+		if (isDie != 0 || moveCount <= 0)
 		{
 			Sleep(500);
 			show_game_over();

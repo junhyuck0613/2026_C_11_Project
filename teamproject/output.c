@@ -152,7 +152,7 @@ int show_menu()
 	}
 }
 
-void show_message(char str[][100], int count)
+void show_message(char str[][150], int count)
 {
 	int i;
 
