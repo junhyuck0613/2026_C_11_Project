@@ -1,3 +1,5 @@
+//enemy.h
+
 struct enemy {
 	int active;
 	int x, y;
