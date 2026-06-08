@@ -1,2 +1,0 @@
-void ActivateDoubleMoveItem();
-void UpdateDoubleMoveItem();
