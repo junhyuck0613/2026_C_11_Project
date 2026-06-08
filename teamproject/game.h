@@ -1,3 +1,5 @@
+//game.h
+
 void init_game();
 void start_menu();
 void set_difficulty();
