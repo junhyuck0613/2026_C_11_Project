@@ -1,3 +1,5 @@
+//output.h
+
 void render_map();
 int show_start_menu();
 int show_menu();
