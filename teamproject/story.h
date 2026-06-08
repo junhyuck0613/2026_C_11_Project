@@ -1,4 +1,4 @@
-#pragma once
+//story.h
 
 extern char startStory[][150];
 extern char easyStory[][150];
