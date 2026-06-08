@@ -1,3 +1,5 @@
+//map.h
+
 #include "constant.h"
 
 void reset_player_location();
